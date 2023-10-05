@@ -42,8 +42,9 @@ Delete
 
 2 - Reviews
 CREATE
-Available after end of reservation
-UPDATE
+
+- Available after end of reservation
+  UPDATE
 
 3 - Search
 
