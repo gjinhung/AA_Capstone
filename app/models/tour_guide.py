@@ -35,7 +35,7 @@ class TourGuide(db.Model):
             'about': self.about,
             'bookings': self.bookings,
             'guide': self.guide,
-            'specialties': self.specialities,
+            'specialties': self.specialties,
             'dates': self.dates,
             'reviews': self.reviews,
             'created_at': self.created_at,

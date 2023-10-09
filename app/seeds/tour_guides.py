@@ -10,7 +10,7 @@ def seed_tour_guides():
         language="English",
         price=40,
         about='This Tour will take you to New York"s greatest chinese communities for an culinary experience you won"t forget.',
-        specialties=[food],
+        specialties=[],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     tour2 = TourGuide(

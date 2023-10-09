@@ -10,4 +10,5 @@ tour_specialty = db.Table(
     "tour_specialties",
     Base.metadata,
     Column("specialty_id", ForeignKey("specialties.id"), primary_key=True),
-    Column("tour_id", ForeignKey("tour_guides.id"), primary_key=True))
+    Column("tour_id", ForeignKey("tour_guides.id"), primary_key=True),
+    )
