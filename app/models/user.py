@@ -4,20 +4,20 @@ from flask_login import UserMixin
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import Column, ForeignKey, Table
 
-Base = declarative_base()
+# Base = declarative_base()
 
 
 tour_specialties = db.Table(
     "tour_specialties",
-    Base.metadata,
-    Column("specialty_id", db.Integer, ForeignKey(add_prefix_for_prod("specialties.id")), primary_key=True),
-    Column("specialty_tour_id", db.Integer, ForeignKey(add_prefix_for_prod("tour_guides.id")), primary_key=True))
+    db.Model.metadata,
+    db.Column("specialty_id", db.Integer, db.ForeignKey(add_prefix_for_prod("specialties.id")), primary_key=True),
+    db.Column("specialty_tour_id", db.Integer, db.ForeignKey(add_prefix_for_prod("tour_guides.id")), primary_key=True))
 
 tour_dates = db.Table(
     "tour_dates",
-    Base.metadata,
-    Column("date_id", db.Integer, ForeignKey(add_prefix_for_prod("dates.id")), primary_key=True),
-    Column("tour_id", db.Integer, ForeignKey(add_prefix_for_prod("tour_guides.id")), primary_key=True))
+    db.Model.metadata,
+    db.Column("date_id", db.Integer, db.ForeignKey(add_prefix_for_prod("dates.id")), primary_key=True),
+    db.Column("tour_id", db.Integer, db.ForeignKey(add_prefix_for_prod("tour_guides.id")), primary_key=True))
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -80,8 +80,8 @@ class Booking(db.Model):
     id = db.Column(db.Integer,autoincrement=True, primary_key=True)
     tourist_id = db.Column(db.Integer,db.ForeignKey(add_prefix_for_prod("users.id")))
     tour_guide_id = db.Column(db.Integer,db.ForeignKey(add_prefix_for_prod("tour_guides.id")))
-    date = db.Column(db.DateTime(), nullable=False)
-    start_time = db.Column(db.DateTime(), nullable=False)
+    date = db.Column(db.Date(), nullable=False)
+    start_time = db.Column(db.Time(), nullable=False)
     duration = db.Column(db.Float, nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
     updated_at = db.Column(db.DateTime(), nullable=False)
@@ -110,6 +110,8 @@ class City(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     city = db.Column(db.Integer, nullable=False, unique=True)
+    created_at = db.Column(db.DateTime(), nullable=False)
+    updated_at = db.Column(db.DateTime(), nullable=False)
 
     tours_given = db.relationship("TourGuide", back_populates="cities")
 
@@ -128,6 +130,8 @@ class Date(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String(255), nullable=False, unique=True)
+    created_at = db.Column(db.DateTime(), nullable=False)
+    updated_at = db.Column(db.DateTime(), nullable=False)
 
     tours = db.relationship("TourGuide", secondary=tour_dates, back_populates="dates", cascade='all, delete')
 
@@ -170,7 +174,7 @@ class Review(db.Model):
             'review_body': self.review_body,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'guide': self.guide
+            'tour': self.tour
         }
 
 class Specialty(db.Model):
@@ -181,6 +185,8 @@ class Specialty(db.Model):
 
     id = db.Column(db.Integer,autoincrement=True, primary_key=True)
     specialty = db.Column(db.String(50), nullable=False)
+    created_at = db.Column(db.DateTime(), nullable=False)
+    updated_at = db.Column(db.DateTime(), nullable=False)
 
     tours = db.relationship("TourGuide", secondary=tour_specialties, back_populates='specialties', cascade='all, delete')
 

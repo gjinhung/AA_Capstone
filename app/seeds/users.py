@@ -31,7 +31,8 @@ def seed_users():
         graduation_date=datetime.date(2024, 5, 24),
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    
+    print('demo2 complete')
+
     demo3 = User(
         username='Demo3', 
         email='demo3@aa.io', 
@@ -44,51 +45,24 @@ def seed_users():
         graduation_date=None,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('demo3 complete')
 
     new_york = City(
         city="New York",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('ny complete')
     los_angeles = City(
         city="Los Angeles",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('la complete')
     seattle = City(
         city="Seatle",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('seattle complete')
 
-    review1 = Review(
-        reviewer_id=3, 
-        guide=demo,
-        communication_rating=5,
-        knowledgability_rating=4,
-        professionalism_rating=5,
-        average_rating=round(((5+4+5)/3), 2),
-        review_body='Demo was a very friendly person with lots of knowledge of the city',
-        created_at=datetime.datetime.now(),
-        updated_at=datetime.datetime.now())
-    review2 = Review(
-        reviewer_id=3, 
-        guide_id=2,
-        communication_rating=5,
-        knowledgability_rating=4,
-        professionalism_rating=5,
-        average_rating=round(((5+4+5)/3), 2),
-        review_body='Demo2 was a very friendly person with lots of knowledge of the city',
-        created_at=datetime.datetime.now(),
-        updated_at=datetime.datetime.now())
-    review3 = Review(
-        reviewer_id=1, 
-        guide_id=2,
-        communication_rating=5,
-        knowledgability_rating=4,
-        professionalism_rating=5,
-        average_rating=round(((5+4+5)/3), 2),
-        review_body='Demo3 was a very friendly person with lots of knowledge of the city',
-        created_at=datetime.datetime.now(),
-        updated_at=datetime.datetime.now())
-    
     booking1 = Booking(
         tour_guide_id=1, 
         date=datetime.date(2024, 1, 1),
@@ -97,15 +71,17 @@ def seed_users():
         tourist=demo3,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('booking1 complete')
     
     booking2 = Booking(
         tourist_id=3, 
         date=datetime.date(2024, 2, 1),
         start_time=datetime.time(9),
         duration=3,
-        tour_guide=2,
+        tour_guide_id=2,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('booking2 complete')
     booking3 = Booking(
         tourist_id=1, 
         tour_guide_id=2, 
@@ -114,101 +90,148 @@ def seed_users():
         duration=2,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('booking3 complete')
 
-    tour1 = TourGuide(
-        guide_id=1, 
-        city_id=1,
-        language="English",
-        price=40,
-        about='Born and raised in NYC. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over New York. Come with me on a journey to explore New York',
-        # dates=[monday],
-        # specialties=[food],
+    review1 = Review(
+        reviewer_id=3, 
+        tour_id=1,
+        communication_rating=5,
+        knowledgability_rating=4,
+        professionalism_rating=5,
+        average_rating=round(((5+4+5)/3), 2),
+        review_body='Demo was a very friendly person with lots of knowledge of the city',
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    # tour2 = TourGuide(
-    #     language="English",
-    #     price=20,
-    #     about='Born and raised in LA. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over New York. Come with me on a journey to explore Los Angeles.',
-    #     guide=demo2,
-    #     cities=los_angeles,
-    #     # specialties=[other],
-    #     # dates=[wednesday],
-    #     created_at=datetime.datetime.now(),
-    #     updated_at=datetime.datetime.now())
-    # tour3 = TourGuide(
-    #     guide_id=2, 
-    #     city_id=3,
-    #     language="Chinese",
-    #     price=50,
-    #     about='Born and raised in Seattle. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over New York. Come with me on a journey to explore Seattle',
-    #     # specialties=[adventure],
-    #     # dates=[friday],
-    #     created_at=datetime.datetime.now(),
-    #     updated_at=datetime.datetime.now())
+    print('rev1 complete')
+    review2 = Review(
+        reviewer_id=3, 
+        tour_id=2,
+        communication_rating=5,
+        knowledgability_rating=4,
+        professionalism_rating=5,
+        average_rating=round(((5+4+5)/3), 2),
+        review_body='Demo2 was a very friendly person with lots of knowledge of the city',
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print('rev2 complete')
+    review3 = Review(
+        reviewer_id=1, 
+        tour_id=2,
+        communication_rating=5,
+        knowledgability_rating=4,
+        professionalism_rating=5,
+        average_rating=round(((5+4+5)/3), 2),
+        review_body='Demo3 was a very friendly person with lots of knowledge of the city',
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print('rev3 complete')
     
 
     food = Specialty(
         specialty="Food",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    
+    print('food complete')
+
     history = Specialty(
         specialty="History",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('his complete')
     
     adventure = Specialty(
         specialty="Adventure",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    print('adv complete')
 
     other = Specialty(
         specialty="Other",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    
+    print('other complete')
         
     monday = Date(
         date="Monday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    # tuesday = Date(
-    #     date="Tuesday",
-    #     created_at=datetime.datetime.now(),
-    #     updated_at=datetime.datetime.now())
-    # wednesday = Date(
-    #     date="Wednesday",
-    #     created_at=datetime.datetime.now(),
-    #     updated_at=datetime.datetime.now())
-    # thursday = Date(
-    #     date="Thursday",
-    #     created_at=datetime.datetime.now(),
-    #     updated_at=datetime.datetime.now())
-    # friday = Date(
-    #     date="Friday",
-    #     created_at=datetime.datetime.now(),
-    #     updated_at=datetime.datetime.now())
-    # saturday = Date(
-    #     date="Saturday",
-    #     created_at=datetime.datetime.now(),
-    #     updated_at=datetime.datetime.now())
-    # sunday = Date(
-    #     date="Sunday",
-    #     created_at=datetime.datetime.now(),
-    #     updated_at=datetime.datetime.now()) 
+    print('mon')
+    tuesday = Date(
+        date="Tuesday",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print('tues')
+    wednesday = Date(
+        date="Wednesday",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print('wed')
+    thursday = Date(
+        date="Thursday",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print('thurs')
+    friday = Date(
+        date="Friday",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print('fri')
+    saturday = Date(
+        date="Saturday",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print('sat')
+    sunday = Date(
+        date="Sunday",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now()) 
+    print("sun")
     
-    tour1.dates.append(monday)
+    tour1 = TourGuide(
+        guide_id=1, 
+        city_id=1,
+        language="English",
+        price=40,
+        about='Born and raised in NYC. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over New York. Come with me on a journey to explore New York',
+        dates=[monday, tuesday, saturday],
+        specialties=[food],
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print("tour1")
+    tour2 = TourGuide(
+        language="English",
+        price=20,
+        about='Born and raised in LA. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over LA. Come with me on a journey to explore Los Angeles.',
+        guide=demo2,
+        cities=los_angeles,
+        specialties=[other],
+        dates=[wednesday, friday, saturday, sunday],
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print("tour2")
+    tour3 = TourGuide(
+        guide_id=2, 
+        city_id=3,
+        language="Chinese",
+        price=50,
+        about='Born and raised in Seattle. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over Seattle. Come with me on a journey to explore Seattle',
+        specialties=[adventure],
+        dates=[friday, saturday, sunday],
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    print('tour3')
 
 
-    db.session.add[tour1, 
-                #    tour2, tour3, 
+    db.session.add_all([tour1, 
+                   tour2, tour3, 
                    demo, demo2, demo3, 
                    seattle, new_york, los_angeles, 
-                   monday, tuesday, wednesday, thursday, friday, saturday, sunday,
+                   monday, 
+                   tuesday, wednesday, thursday, friday, saturday, sunday,
                    booking1, booking2, booking3,
                    review1, review2, review3,
                    adventure, history, food, other
-                   ]
+                   ])
     db.session.commit()
 
 

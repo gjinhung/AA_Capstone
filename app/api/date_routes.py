@@ -8,7 +8,7 @@ dates_routes = Blueprint('dates', __name__)
 @dates_routes.route('/')
 def get_all_dates():
     dates = Date.query.all()
-    return jsonify([dates.to_dict() for date in dates])
+    return jsonify([date.to_dict() for date in dates])
 
 @dates_routes.route('/:dateId')
 def get_dates(dateId):
