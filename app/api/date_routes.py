@@ -4,17 +4,25 @@ from ..models import db , Date
 dates_routes = Blueprint('dates', __name__)
 
 
-
 @dates_routes.route('/')
 def get_all_dates():
+    date_data=[]
     dates = Date.query.all()
-    return jsonify([date.to_dict() for date in dates])
 
-@dates_routes.route('/:dateId')
-def get_dates(dateId):
-    date = Date.query.filter_by(date=dateId)
+    if request.args.get('date'):
+        date = request.args.get('date').lower().title()
+        if not Date.query.filter_by(date=date).count():
+            return jsonify("Date does not exist"), 404
+        else: dates = Date.query.filter_by(date=date)
+    for date in dates:
+        date_dict = date.to_dict()
+        tours = date.tours
+        tour_list = []
+        for tour in tours:
+            t_dic = tour.to_dict()
+            tour_list.append(t_dic)
 
-    if not date:
-        return jsonify({"error": "Date not found"}), 404
-    
-    # return {"tours": {image.id: image.to_dict() for image in images}}
+        date_dict['tours'] = tour_list
+        date_data.append(date_dict)
+        
+    return jsonify(date_data)

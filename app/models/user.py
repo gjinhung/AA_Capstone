@@ -65,10 +65,7 @@ class User(db.Model, UserMixin):
             'graduation_date': self.graduation_date,
             "profile_pic": self.profile_pic,
             'created_at': self.created_at,
-            'updated_at': self.updated_at,
-            'reviews': self.reviews,
-            'tourist_tours': self.tourist_tours,
-
+            'updated_at': self.updated_at
         }
     
 class Booking(db.Model):
@@ -97,7 +94,6 @@ class Booking(db.Model):
             'date': self.date,
             'start_time': self.start_time,
             'duration': self.duration,
-            'tourist': self.tourist,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }
@@ -118,8 +114,7 @@ class City(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'city': self.city,
-            'tours_given': self.tours_given
+            'city': self.city
         }
     
 class Date(db.Model):
@@ -138,8 +133,7 @@ class Date(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'date': self.date,
-            'tours': self.tours
+            'date': self.date
         }
     
 class Review(db.Model):
@@ -173,8 +167,7 @@ class Review(db.Model):
             'professionalism_rating': self.professionalism_rating,
             'review_body': self.review_body,
             'created_at': self.created_at,
-            'updated_at': self.updated_at,
-            'tour': self.tour
+            'updated_at': self.updated_at
         }
 
 class Specialty(db.Model):
@@ -193,8 +186,7 @@ class Specialty(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'specialty': self.specialty,
-            'tours': self.tours
+            'specialty': self.specialty
         }
 
 class TourGuide(db.Model):
@@ -228,11 +220,6 @@ class TourGuide(db.Model):
             'language': self.language,
             'price': self.price,
             'about': self.about,
-            'bookings': self.bookings,
-            'guide': self.guide,
-            'specialties': self.specialties,
-            'dates': self.dates,
-            'reviews': self.reviews,
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
