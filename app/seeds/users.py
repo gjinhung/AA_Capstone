@@ -1,4 +1,4 @@
-from app.models import db, User, City, Date, Review, Booking, TourGuide, Specialty, environment, SCHEMA
+from app.models import db, User, City, Date, Review, Booking, TourGuide, Language, Specialty, environment, SCHEMA
 from sqlalchemy.sql import text
 import datetime
 
@@ -187,10 +187,30 @@ def seed_users():
         updated_at=datetime.datetime.now()) 
     print("sun")
     
+    english = Language(
+        language="English",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    
+    spanish = Language(
+        language="Spanish",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    
+    chinese = Language(
+        language="Chinese",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    
+    monday = Date(
+        date="Monday",
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+
     tour1 = TourGuide(
         guide_id=1, 
         city_id=1,
-        language="English",
+        language=english,
         price=40,
         about='Born and raised in NYC. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over New York. Come with me on a journey to explore New York',
         dates=[monday, tuesday, saturday],
@@ -199,7 +219,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     print("tour1")
     tour2 = TourGuide(
-        language="English",
+        language=spanish,
         price=20,
         about='Born and raised in LA. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over LA. Come with me on a journey to explore Los Angeles.',
         guide=demo2,
@@ -212,7 +232,7 @@ def seed_users():
     tour3 = TourGuide(
         guide_id=2, 
         city_id=3,
-        language="Chinese",
+        language=chinese,
         price=50,
         about='Born and raised in Seattle. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over Seattle. Come with me on a journey to explore Seattle',
         specialties=[adventure],
@@ -222,13 +242,12 @@ def seed_users():
     print('tour3')
 
 
-    db.session.add_all([tour1, 
-                   tour2, tour3, 
+    db.session.add_all([tour1, tour2, tour3, 
                    demo, demo2, demo3, 
                    seattle, new_york, los_angeles, 
-                   monday, 
-                   tuesday, wednesday, thursday, friday, saturday, sunday,
+                   monday, tuesday, wednesday, thursday, friday, saturday, sunday,
                    booking1, booking2, booking3,
+                   english, spanish, chinese,
                    review1, review2, review3,
                    adventure, history, food, other
                    ])

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app.models import User
 
 user_routes = Blueprint('users', __name__)
@@ -22,4 +22,40 @@ def user(id):
     Query for a user by id and returns that user in a dictionary
     """
     user = User.query.get(id)
-    return user.to_dict()
+    user_dict = user.to_dict()
+    reviews = []
+    u_reviews = user.reviews
+    for rev in u_reviews:
+        reviews.append(rev.average_rating)
+    
+    rev_sum = sum(reviews)
+    if not len(reviews):
+        rating = 0
+    else:
+        rating = round((rev_sum/len(reviews)),2)
+
+    user_dict['rating'] = rating
+
+    return user_dict
+
+@user_routes.route('/current')
+@login_required
+def current():
+
+    user = User.query.get(current_user.id)
+    user_dict = user.to_dict()
+    reviews = []
+    u_reviews = user.reviews
+    for rev in u_reviews:
+        reviews.append(rev.average_rating)
+    
+    rev_sum = sum(reviews)
+
+    if not len(reviews):
+        rating = 0
+    else:
+        rating = round((rev_sum/len(reviews)),2)
+
+    user_dict['rating'] = rating
+
+    return user_dict

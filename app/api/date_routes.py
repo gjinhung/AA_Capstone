@@ -10,19 +10,19 @@ def get_all_dates():
     dates = Date.query.all()
 
     if request.args.get('date'):
-        date = request.args.get('date').lower().title()
+        date = request.args.get('date').title()
         if not Date.query.filter_by(date=date).count():
-            return jsonify("Date does not exist"), 404
+            return jsonify({"errors": "Date does not exist"}), 404
         else: dates = Date.query.filter_by(date=date)
     for date in dates:
         date_dict = date.to_dict()
         tours = date.tours
         tour_list = []
         for tour in tours:
-            t_dic = tour.to_dict()
+            t_dic = tour.id
             tour_list.append(t_dic)
 
-        date_dict['tours'] = tour_list
+        date_dict['tours_id'] = tour_list
         date_data.append(date_dict)
         
     return jsonify(date_data)

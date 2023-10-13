@@ -12,40 +12,27 @@ def get_all_bookings():
     bookings = Booking.query.all()
     bookings_data = []
     for booking in bookings:
-        date_format = '%Y-%m-%d'
-        date = (booking.date).strftime(date_format)
-        time_format = '%H:%M:%S'
-        start_time = (booking.start_time).strftime(time_format)
-        # to convert back, use datetime.date.fromisoformat(start_time)
+        # # to convert to string use strftime
+        # date_format = '%Y-%m-%d'
+        # date = (booking.date).strftime(date_format)
+        # time_format = '%H:%M:%S'
+        # start_time = (booking.start_time).strftime(time_format)
+        # # to convert to datetime.date.fromisoformat(start_time)
         booking_dict = booking.to_dict()
-        booking_dict['start_time'] = start_time
-        booking_dict['date'] = date
-        
-        # tourists = booking.tourist
-        # # t_list = []
-        # # for tourist in tourists:
-        # t_dict = tourists.to_dict()
-        # # t_list.append(t_dict)
-
-        # booking_dict['tourist'] = t_dict
+        # booking_dict['start_time'] = start_time
+        # booking_dict['date'] = date
         bookings_data.append(booking_dict)
     return jsonify(bookings_data)
 
 @booking_routes.route('/<int:id>')
 def get_one_booking(id):
     booking = Booking.query.get_or_404(id)
+
+    if not booking:
+        return jsonify({"errors": "Booking not found"}), 404
+
     booking_dict = booking.to_dict()
-    # stringify date
-    date_format = '%Y-%m-%d'
-    date = (booking.date).strftime(date_format)
-    # stringify time
-    time_format = '%H:%M:%S'
-    start_time = (booking.start_time).strftime(time_format)
-
-    booking_dict['start_time'] = start_time
-    booking_dict['date'] = date
-    return jsonify(booking_dict)
-
+    return booking_dict
 
 @booking_routes.route('/tour/<int:tourId>/new', methods=['POST'])
 @login_required
@@ -53,15 +40,10 @@ def add_booking(tourId):
     form = BookingForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     tour = TourGuide.query.get_or_404(tourId)  
-    print(form.data)
+    if not tour:
+        return jsonify({"errors": "Tour not found"}), 404
+    
     if form.validate_on_submit():
-        print(type(form.data))
-        date_format = '%Y-%m-%d'
-        time_format = '%H:%M:%S'
-        raw_date = form.date.data
-        raw_time = form.start_time.data
-        normalized_date = raw_date.strftime(date_format)
-        normalized_time = raw_time.strftime(time_format)
         booking = Booking(
             tourist_id=current_user.id,
             tour_guide_id=tour.guide_id,
@@ -74,15 +56,16 @@ def add_booking(tourId):
 
         db.session.add(booking)
         db.session.commit()
-
-        booking_to_dict = booking.to_dict()
-
-        booking_to_dict['date'] = normalized_date
-        booking_to_dict['start_time'] = normalized_time
-        return booking_to_dict
+        return booking.to_dict()
     else:
         return {"errors": validation_errors_to_error_messages(form.errors)}
-    
+#     {
+#     "errors": [
+#         "date : This field is required.",
+#         "start_time : This field is required.",
+#         "duration : This field is required."
+#     ]
+# }
 
 @booking_routes.route('/<int:id>', methods=['PUT'])
 @login_required
@@ -91,10 +74,9 @@ def edit_booking(id):
     form['csrf_token'].data = request.cookies['csrf_token']
     booking = Booking.query.get(id)
     if current_user.id != booking.tourist_id and current_user.id != booking.tour_guide_id:
-        return jsonify({"error": "Unauthorized to edit this booking"}), 403
+        return jsonify({"errors": "Unauthorized to edit this booking"}), 403
 
     if form.validate_on_submit():
-
         attributes_to_update = ['date', 'start_time', 'duration']
         for attr in attributes_to_update:
             if hasattr(form, attr):
@@ -103,33 +85,31 @@ def edit_booking(id):
         booking.updated_at = datetime.datetime.utcnow()
         db.session.commit()
 
-        return jsonify(booking.to_dict())
+        return booking.to_dict()
     else:
         return {"errors": validation_errors_to_error_messages(form.errors)}
     
 
 @booking_routes.route('/<int:id>/', methods=['DELETE'])
-def delete_business(b_id):
+def delete_booking(id):
     booking = Booking.query.get(id)
 
     if not booking:
-        return jsonify({"error": "Booking not found"}), 404
+        return jsonify({"errors": "Booking not found"}), 404
 
     if current_user.id != booking.tourist_id and current_user.id != booking.tour_guide_id:
-        return jsonify({"error": "Unauthorized to edit this booking"}), 403
+        return jsonify({"errors": "Unauthorized to delete this booking"}), 403
 
     try:
         db.session.delete(booking)
         db.session.commit()
 
-
         response = {
-            "message": "Booking successfully deleted.",
-            # "business": temp
+            "message": "Booking successfully deleted."
         }
 
         return jsonify(response)
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": "An error occurred while deleting the Booking", "message": str(e)}), 500
+        return jsonify({"errors": "An error occurred while deleting the Booking", "message": str(e)}), 500

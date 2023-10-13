@@ -87,6 +87,14 @@ class Booking(db.Model):
     tour_guide = db.relationship("TourGuide", back_populates='bookings')
 
     def to_dict(self):
+        time_format = '%H:%M:%S'
+        date_format = '%Y-%m-%d'
+        raw_time = self.start_time
+        raw_date = self.date
+        string_time = raw_time.strftime(time_format)
+        string_date = raw_date.strftime(date_format)
+        self.date = string_date
+        self.start_time = string_time
         return {
             'id': self.id,
             'tour_guide_id': self.tour_guide_id,
@@ -105,7 +113,7 @@ class City(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    city = db.Column(db.Integer, nullable=False, unique=True)
+    city = db.Column(db.String(255), nullable=False, unique=True)
     created_at = db.Column(db.DateTime(), nullable=False)
     updated_at = db.Column(db.DateTime(), nullable=False)
 
@@ -128,12 +136,31 @@ class Date(db.Model):
     created_at = db.Column(db.DateTime(), nullable=False)
     updated_at = db.Column(db.DateTime(), nullable=False)
 
-    tours = db.relationship("TourGuide", secondary=tour_dates, back_populates="dates", cascade='all, delete')
+    tours = db.relationship("TourGuide", secondary=tour_dates, back_populates="dates")
 
     def to_dict(self):
         return {
             'id': self.id,
             'date': self.date
+        }
+    
+class Language(db.Model):
+    __tablename__ = 'languages'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+
+    id = db.Column(db.Integer, primary_key=True)
+    language = db.Column(db.String(255), nullable=False, unique=True)
+    created_at = db.Column(db.DateTime(), nullable=False)
+    updated_at = db.Column(db.DateTime(), nullable=False)
+
+    tours_given = db.relationship("TourGuide", back_populates="language")
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'language': self.language
         }
     
 class Review(db.Model):
@@ -160,6 +187,7 @@ class Review(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
+            'tour_id': self.tour_id,
             'reviewer_id': self.reviewer_id,
             'average_rating': self.average_rating,
             'communication_rating': self.communication_rating,
@@ -181,7 +209,7 @@ class Specialty(db.Model):
     created_at = db.Column(db.DateTime(), nullable=False)
     updated_at = db.Column(db.DateTime(), nullable=False)
 
-    tours = db.relationship("TourGuide", secondary=tour_specialties, back_populates='specialties', cascade='all, delete')
+    tours = db.relationship("TourGuide", secondary=tour_specialties, back_populates='specialties')
 
     def to_dict(self):
         return {
@@ -198,7 +226,7 @@ class TourGuide(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     guide_id = db.Column(db.Integer,db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     city_id = db.Column(db.Integer,db.ForeignKey(add_prefix_for_prod('cities.id')), nullable=False)
-    language = db.Column(db.String(50), nullable=False)
+    language_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('languages.id')), nullable=False)
     price = db.Column(db.Float, nullable=False)
     about = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
@@ -206,18 +234,19 @@ class TourGuide(db.Model):
 
     guide = db.relationship("User", back_populates='tours_given')
     cities = db.relationship("City", back_populates="tours_given")
+    language = db.relationship("Language", back_populates="tours_given")
     bookings = db.relationship("Booking", back_populates='tour_guide')
     reviews = db.relationship("Review", back_populates="tour")
 
-    specialties = db.relationship("Specialty", secondary=tour_specialties, back_populates='tours', cascade='all, delete')
-    dates = db.relationship("Date", secondary=tour_dates, back_populates='tours', cascade='all, delete')
+    specialties = db.relationship("Specialty", secondary=tour_specialties, back_populates='tours')
+    dates = db.relationship("Date", secondary=tour_dates, back_populates='tours')
 
     def to_dict(self):
         return {
             'id': self.id,
             'guide_id': self.guide_id,
             'city_id': self.city_id,
-            'language': self.language,
+            'language_id': self.language_id,
             'price': self.price,
             'about': self.about,
             'created_at': self.created_at,
