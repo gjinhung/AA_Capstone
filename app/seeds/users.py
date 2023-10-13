@@ -210,7 +210,7 @@ def seed_users():
         price=20,
         about='Born and raised in LA. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over LA. Come with me on a journey to explore Los Angeles.',
         guide=demo2,
-        cities=los_angeles,
+        city_id=2,
         specialties=[other],
         dates=[wednesday, friday, saturday, sunday],
         created_at=datetime.datetime.now(),
