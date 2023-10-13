@@ -173,13 +173,13 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     tour2 = TourGuide(
+        guide=demo2,
+        city_id=2,
         language=spanish,
         price=20,
         about='Born and raised in LA. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over LA. Come with me on a journey to explore Los Angeles.',
-        guide=demo2,
-        city_id=2,
-        specialties=[other],
         dates=[wednesday, friday, saturday, sunday],
+        specialties=[other],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
@@ -189,8 +189,8 @@ def seed_users():
         language=chinese,
         price=50,
         about='Born and raised in Seattle. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over Seattle. Come with me on a journey to explore Seattle',
-        specialties=[adventure],
         dates=[friday, saturday, sunday],
+        specialties=[adventure],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
 
