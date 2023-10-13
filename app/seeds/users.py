@@ -4,7 +4,7 @@ import datetime
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
-    print('demo start')
+
     demo = User(
         username='Demo', 
         email='demo@aa.io', 
@@ -17,7 +17,6 @@ def seed_users():
         graduation_date=datetime.date(2024, 5, 24),
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('demo1 complete')
     
     demo2 = User(
         username='Demo2', 
@@ -31,7 +30,6 @@ def seed_users():
         graduation_date=datetime.date(2024, 5, 24),
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('demo2 complete')
 
     demo3 = User(
         username='Demo3', 
@@ -45,23 +43,21 @@ def seed_users():
         graduation_date=None,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('demo3 complete')
 
     new_york = City(
         city="New York",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('ny complete')
+    
     los_angeles = City(
         city="Los Angeles",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('la complete')
+    
     seattle = City(
         city="Seatle",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('seattle complete')
 
     booking1 = Booking(
         tour_guide_id=1, 
@@ -71,7 +67,6 @@ def seed_users():
         tourist=demo3,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('booking1 complete')
     
     booking2 = Booking(
         tourist_id=3, 
@@ -81,7 +76,7 @@ def seed_users():
         tour_guide_id=2,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('booking2 complete')
+    
     booking3 = Booking(
         tourist_id=1, 
         tour_guide_id=2, 
@@ -90,7 +85,6 @@ def seed_users():
         duration=2,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('booking3 complete')
 
     review1 = Review(
         reviewer_id=3, 
@@ -102,7 +96,7 @@ def seed_users():
         review_body='Demo was a very friendly person with lots of knowledge of the city',
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('rev1 complete')
+    
     review2 = Review(
         reviewer_id=3, 
         tour_id=2,
@@ -113,7 +107,7 @@ def seed_users():
         review_body='Demo2 was a very friendly person with lots of knowledge of the city',
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('rev2 complete')
+    
     review3 = Review(
         reviewer_id=1, 
         tour_id=2,
@@ -124,68 +118,61 @@ def seed_users():
         review_body='Demo3 was a very friendly person with lots of knowledge of the city',
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('rev3 complete')
     
-
     food = Specialty(
         specialty="Food",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('food complete')
 
     history = Specialty(
         specialty="History",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('his complete')
     
     adventure = Specialty(
         specialty="Adventure",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('adv complete')
 
     other = Specialty(
         specialty="Other",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('other complete')
         
     monday = Date(
         date="Monday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('mon')
+    
     tuesday = Date(
         date="Tuesday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('tues')
+    
     wednesday = Date(
         date="Wednesday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('wed')
+    
     thursday = Date(
         date="Thursday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('thurs')
+    
     friday = Date(
         date="Friday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('fri')
+    
     saturday = Date(
         date="Saturday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('sat')
+    
     sunday = Date(
         date="Sunday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now()) 
-    print("sun")
     
     english = Language(
         language="English",
@@ -217,7 +204,7 @@ def seed_users():
         specialties=[food],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print("tour1")
+    
     tour2 = TourGuide(
         language=spanish,
         price=20,
@@ -228,7 +215,7 @@ def seed_users():
         dates=[wednesday, friday, saturday, sunday],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print("tour2")
+    
     tour3 = TourGuide(
         guide_id=2, 
         city_id=3,
@@ -239,7 +226,6 @@ def seed_users():
         dates=[friday, saturday, sunday],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    print('tour3')
 
 
     db.session.add_all([tour1, tour2, tour3, 

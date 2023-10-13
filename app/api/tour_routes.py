@@ -97,12 +97,12 @@ def add_tour():
     language_data = Language.query.filter_by(language=language).first()
     
     if not language_data:
-        return jsonify({'errors': "Language not found"}), 403
+        errors['language'] = "Language not found"
     
     if not city_data:
-        return jsonify({'errors': "City not found"}), 403
+        errors['city'] = 'City not found'
 
-    if not len(errors):
+    if len(errors):
         return jsonify(errors), 403
 
     if form.validate_on_submit():
@@ -160,8 +160,26 @@ def edit_review(id):
     if not tour:
         return jsonify({'errors': "Tour not found"}), 403
 
+    errors = {}
+
+    language = (form.language.data).title()
+    language_data = Language.query.filter_by(language=language).first()
+    
+    if not language_data:
+        errors['language'] = "Language not found"
+
+    city_name = (form.city.data).title()
+    city_data = City.query.filter_by(city=city_name).first()
+    
+    if not city_data:
+        errors['city'] = 'City not found'
+
+    
     if current_user.id != tour.guide_id:
         return jsonify({"errors": "Unauthorized to edit this review"}), 403
+
+    if len(errors):
+        return jsonify(errors), 403
 
     if form.validate_on_submit():
 
@@ -172,9 +190,7 @@ def edit_review(id):
 
         tour.updated_at = datetime.datetime.utcnow()
 
-        language = (form.language.data).title()
-
-        tour.language = language
+        tour.language_id = language_data.id
 
         city_name = (form.city.data).title()
         city_data = City.query.filter_by(city=city_name).first()
