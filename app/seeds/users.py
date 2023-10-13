@@ -85,39 +85,6 @@ def seed_users():
         duration=2,
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-
-    review1 = Review(
-        reviewer_id=3, 
-        tour_id=1,
-        communication_rating=5,
-        knowledgability_rating=4,
-        professionalism_rating=5,
-        average_rating=round(((5+4+5)/3), 2),
-        review_body='Demo was a very friendly person with lots of knowledge of the city',
-        created_at=datetime.datetime.now(),
-        updated_at=datetime.datetime.now())
-    
-    review2 = Review(
-        reviewer_id=3, 
-        tour_id=2,
-        communication_rating=5,
-        knowledgability_rating=4,
-        professionalism_rating=5,
-        average_rating=round(((5+4+5)/3), 2),
-        review_body='Demo2 was a very friendly person with lots of knowledge of the city',
-        created_at=datetime.datetime.now(),
-        updated_at=datetime.datetime.now())
-    
-    review3 = Review(
-        reviewer_id=1, 
-        tour_id=2,
-        communication_rating=5,
-        knowledgability_rating=4,
-        professionalism_rating=5,
-        average_rating=round(((5+4+5)/3), 2),
-        review_body='Demo3 was a very friendly person with lots of knowledge of the city',
-        created_at=datetime.datetime.now(),
-        updated_at=datetime.datetime.now())
     
     food = Specialty(
         specialty="Food",
@@ -227,16 +194,48 @@ def seed_users():
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
 
+    review1 = Review(
+        reviewer_id=3, 
+        tour_id=1,
+        communication_rating=5,
+        knowledgability_rating=4,
+        professionalism_rating=5,
+        average_rating=round(((5+4+5)/3), 2),
+        review_body='Demo was a very friendly person with lots of knowledge of the city',
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    
+    review2 = Review(
+        reviewer_id=3, 
+        tour_id=2,
+        communication_rating=5,
+        knowledgability_rating=4,
+        professionalism_rating=5,
+        average_rating=round(((5+4+5)/3), 2),
+        review_body='Demo2 was a very friendly person with lots of knowledge of the city',
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
+    
+    review3 = Review(
+        reviewer_id=1, 
+        tour_id=2,
+        communication_rating=5,
+        knowledgability_rating=4,
+        professionalism_rating=5,
+        average_rating=round(((5+4+5)/3), 2),
+        review_body='Demo3 was a very friendly person with lots of knowledge of the city',
+        created_at=datetime.datetime.now(),
+        updated_at=datetime.datetime.now())
 
     db.session.add_all([
                    demo, demo2, demo3, 
                    seattle, new_york, los_angeles, 
                    monday, tuesday, wednesday, thursday, friday, saturday, sunday,
-                   booking1, booking2, booking3,
-                   english, spanish, chinese,
-                   review1, review2, review3,
                    adventure, history, food, other,
-                   tour1, tour2, tour3
+                   english, spanish, chinese,
+                   booking1, booking2, booking3,
+                   tour1, tour2, tour3,
+                   review1, review2, review3
                    ])
     db.session.commit()
 
