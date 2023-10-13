@@ -55,7 +55,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     seattle = City(
-        city="Seatle",
+        city="Seattle",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
 
