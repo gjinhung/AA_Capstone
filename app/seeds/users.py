@@ -228,14 +228,15 @@ def seed_users():
         updated_at=datetime.datetime.now())
 
 
-    db.session.add_all([tour1, tour2, tour3, 
+    db.session.add_all([
                    demo, demo2, demo3, 
                    seattle, new_york, los_angeles, 
                    monday, tuesday, wednesday, thursday, friday, saturday, sunday,
                    booking1, booking2, booking3,
                    english, spanish, chinese,
                    review1, review2, review3,
-                   adventure, history, food, other
+                   adventure, history, food, other,
+                   tour1, tour2, tour3
                    ])
     db.session.commit()
 

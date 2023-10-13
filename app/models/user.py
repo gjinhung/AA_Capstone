@@ -117,7 +117,7 @@ class City(db.Model):
     created_at = db.Column(db.DateTime(), nullable=False)
     updated_at = db.Column(db.DateTime(), nullable=False)
 
-    tours_given = db.relationship("TourGuide", back_populates="cities")
+    # tours_given = db.relationship("TourGuide", back_populates="cities")
 
     def to_dict(self):
         return {
