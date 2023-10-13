@@ -228,8 +228,8 @@ def seed_users():
         updated_at=datetime.datetime.now())
 
     db.session.add_all([
-                   demo, demo2, demo3, 
                    seattle, new_york, los_angeles, 
+                   demo, demo2, demo3, 
                    monday, tuesday, wednesday, thursday, friday, saturday, sunday,
                    adventure, history, food, other,
                    english, spanish, chinese,
