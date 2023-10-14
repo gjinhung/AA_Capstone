@@ -172,11 +172,6 @@ def seed_users():
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
-    tour1.dates.append(monday)
-    tour1.dates.append(tuesday)
-    tour1.dates.append(saturday)
-    tour1.specialties.append(food)
-    
     tour2 = TourGuide(
         guide=demo2,
         city_id=2,
