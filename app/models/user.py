@@ -117,7 +117,7 @@ class City(db.Model):
     created_at = db.Column(db.DateTime(), nullable=False)
     updated_at = db.Column(db.DateTime(), nullable=False)
 
-    tours_given = db.relationship("TourGuide", back_populates="citiess")
+    tours_given = db.relationship("TourGuide", back_populates="cities")
 
     def to_dict(self):
         return {
@@ -136,7 +136,7 @@ class Date(db.Model):
     created_at = db.Column(db.DateTime(), nullable=False)
     updated_at = db.Column(db.DateTime(), nullable=False)
 
-    tours = db.relationship("TourGuide", secondary=tour_dates, back_populates="dates")
+    tours = db.relationship("TourGuide", secondary=add_prefix_for_prod('tour_dates'), back_populates="dates")
 
     def to_dict(self):
         return {
@@ -209,7 +209,7 @@ class Specialty(db.Model):
     created_at = db.Column(db.DateTime(), nullable=False)
     updated_at = db.Column(db.DateTime(), nullable=False)
 
-    tours = db.relationship("TourGuide", secondary=tour_specialties, back_populates='specialties')
+    tours = db.relationship("TourGuide", secondary=add_prefix_for_prod('tour_specialties'), back_populates='specialties')
 
     def to_dict(self):
         return {
@@ -233,13 +233,13 @@ class TourGuide(db.Model):
     updated_at = db.Column(db.DateTime(), nullable=False)
 
     guide = db.relationship("User", back_populates='tours_given')
-    citiess = db.relationship("City", back_populates="tours_given")
+    cities = db.relationship("City", back_populates="tours_given")
     language = db.relationship("Language", back_populates="tours_given")
     bookings = db.relationship("Booking", back_populates='tour_guide')
     reviews = db.relationship("Review", back_populates="tour")
 
-    specialties = db.relationship("Specialty", secondary=tour_specialties, back_populates='tours')
-    dates = db.relationship("Date", secondary=tour_dates, back_populates='tours')
+    specialties = db.relationship("Specialty", secondary=add_prefix_for_prod('tour_specialties'), back_populates='tours')
+    dates = db.relationship("Date", secondary=add_prefix_for_prod('tour_dates'), back_populates='tours')
 
     def to_dict(self):
         return {
