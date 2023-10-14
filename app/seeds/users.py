@@ -155,11 +155,6 @@ def seed_users():
         language="Chinese",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
-    
-    monday = Date(
-        date="Monday",
-        created_at=datetime.datetime.now(),
-        updated_at=datetime.datetime.now())
 
     tour1 = TourGuide(
         guide_id=1, 
@@ -167,8 +162,8 @@ def seed_users():
         language=english,
         price=40,
         about='Born and raised in NYC. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over New York. Come with me on a journey to explore New York',
-        # dates=[monday, tuesday, saturday],
-        # specialties=[food],
+        dates=[monday, tuesday, saturday],
+        specialties=[food],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
@@ -178,8 +173,8 @@ def seed_users():
         language=spanish,
         price=20,
         about='Born and raised in LA. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over LA. Come with me on a journey to explore Los Angeles.',
-        # dates=[wednesday, friday, saturday, sunday],
-        # specialties=[other],
+        dates=[wednesday, friday, saturday, sunday],
+        specialties=[other],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
@@ -189,8 +184,8 @@ def seed_users():
         language=chinese,
         price=50,
         about='Born and raised in Seattle. I"ve spent a lot of money and time, traveling around, taking pictures and eating all over Seattle. Come with me on a journey to explore Seattle',
-        # dates=[friday, saturday, sunday],
-        # specialties=[adventure],
+        dates=[friday, saturday, sunday],
+        specialties=[adventure],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
 

@@ -19,6 +19,10 @@ tour_dates = db.Table(
     db.Column("date_id", db.Integer, db.ForeignKey(add_prefix_for_prod("dates.id")), primary_key=True),
     db.Column("tour_id", db.Integer, db.ForeignKey(add_prefix_for_prod("tour_guides.id")), primary_key=True))
 
+if environment == 'production':
+    tour_specialties.schema = SCHEMA
+    tour_dates.schema = SCHEMA
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
