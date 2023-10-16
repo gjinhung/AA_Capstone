@@ -24,6 +24,6 @@ def get_all_cities():
         city_dict['tours_id'] = tour_list
         city_data.append(city_dict)
         
-    return jsonify(city_data)
+    return {city['id']: city for city in city_data}
 
 

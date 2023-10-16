@@ -13,7 +13,7 @@ def get_all_reviews():
     reviews_data = []
     for review in reviews:
         reviews_data.append(review.to_dict())
-    return jsonify(reviews_data)
+    return {"reviews": {review['id']: review for review in reviews_data}}
 
 @review_routes.route('/<int:id>')
 def get_one_review(id):
@@ -23,7 +23,7 @@ def get_one_review(id):
         return jsonify({"errors": "Review not found"}), 404
     
     review_dict = review.to_dict()
-    return review_dict
+    return {'reviews': {review_dict['id']: review_dict}}
 
 
 @review_routes.route('/tour/<int:tourId>', methods=['POST'])

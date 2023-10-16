@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 import { ModalProvider, Modal } from "./context/Modal";
+import { NavProvider } from "./context/NavigationBar";
 import configureStore from "./store";
 import * as sessionActions from "./store/session";
 import App from "./App";
@@ -25,8 +26,10 @@ function Root() {
 		<ModalProvider>
 			<Provider store={store}>
 				<BrowserRouter>
-					<App />
-					<Modal />
+					<NavProvider>
+						<App />
+						<Modal />
+					</NavProvider>
 				</BrowserRouter>
 			</Provider>
 		</ModalProvider>

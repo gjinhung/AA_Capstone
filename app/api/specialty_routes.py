@@ -24,4 +24,4 @@ def get_all_spec():
 
         spcl_dict['tours_id'] = tour_list
         spcl_data.append(spcl_dict)
-    return jsonify(spcl_data)
+    return {spcl['id']: spcl for spcl in spcl_data}

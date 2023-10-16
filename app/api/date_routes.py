@@ -25,4 +25,4 @@ def get_all_dates():
         date_dict['tours_id'] = tour_list
         date_data.append(date_dict)
         
-    return jsonify(date_data)
+    return {date['id']: date for date in date_data}

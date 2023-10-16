@@ -32,18 +32,19 @@ def get_all_tours():
         dates = tour.dates
         dates_data = []
         for date in dates:
-            dates_data.append(date.date)
+            dates_data.append(date.id)
         tour_dict['dates'] = dates_data
 
         # get specialties
         specialties = tour.specialties
         spcls_data = []
         for specialty in specialties:
-            spcls_data.append(specialty.specialty)
-        tour_dict['specialties'] = spcls_data
+            spcls_data.append(specialty.id)
+        tour_dict['specialties_id'] = spcls_data
 
         tours_data.append(tour_dict)
-    return jsonify(tours_data)
+        
+    return {'tours': {tours['id']: tours for tours in tours_data}}
 
 @tours_routes.route('/<int:id>')
 def get_one_tour(id):
@@ -70,16 +71,18 @@ def get_one_tour(id):
     dates = tour.dates
     dates_data = []
     for date in dates:
-        dates_data.append(date.date)
+        dates_data.append(date.id)
     tour_dict['dates'] = dates_data
     # get specialties
     specialties = tour.specialties
     spcls_data = []
     for specialty in specialties:
-        spcls_data.append(specialty.specialty)
-    tour_dict['specialties'] = spcls_data
+        spcls_data.append(specialty.id)
+    tour_dict['specialties_id'] = spcls_data
 
-    return tour_dict
+    # return tour_dict
+    
+    return {'tours': {tour_dict['id']: tour_dict}}
 
 
 @tours_routes.route('/new', methods=['POST'])
@@ -98,12 +101,18 @@ def add_tour():
     
     if not language_data:
         errors['language'] = "Language not found"
+
+    if not form.language.data:
+        errors['language'] = 'Language Required'
     
     if not city_data:
         errors['city'] = 'City not found'
 
+    if not form.city.data:
+        errors['city'] = 'City Required'
+
     if len(errors):
-        return jsonify(errors), 403
+        return {"errors": errors}, 403
 
     if form.validate_on_submit():
         
@@ -145,7 +154,14 @@ def add_tour():
         
         db.session.add(tour)
         db.session.commit()
-        return tour.to_dict()
+        tour_dict = tour.to_dict()
+
+        tour_dict['bookings_id'] = []
+        tour_dict['dates'] = []
+        tour_dict['reviews_id'] = []
+        tour_dict['specialties_id'] = []
+
+        return tour_dict
     else:
         return {"errors": validation_errors_to_error_messages(form.errors)}
     
@@ -229,7 +245,14 @@ def edit_review(id):
 
         db.session.commit()
         
-        return tour.to_dict()
+        tour_dict = tour.to_dict()
+
+        tour_dict['bookings_id'] = []
+        tour_dict['dates'] = []
+        tour_dict['reviews_id'] = []
+        tour_dict['specialties_id'] = []
+
+        return tour_dict
     else:
         return {"errors": validation_errors_to_error_messages(form.errors)}
     
@@ -238,11 +261,11 @@ def edit_review(id):
 def delete_tour(id):
     tour = TourGuide.query.get(id)
 
-    if not tour:
-        return jsonify({"errors": "Tour not found"}), 404
-
     if current_user.id != tour.guide_id:
         return jsonify({"errors": "Unauthorized to delete this Tour"}), 403
+    
+    if not tour:
+        return jsonify({"errors": "Tour not found"}), 404
 
     try:
         db.session.delete(tour)

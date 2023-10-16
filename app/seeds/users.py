@@ -188,6 +188,8 @@ def seed_users():
         specialties=[adventure],
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
+    
+    tour3.dates.append(monday)
 
     review1 = Review(
         reviewer_id=3, 

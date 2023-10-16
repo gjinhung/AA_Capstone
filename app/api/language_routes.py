@@ -24,7 +24,7 @@ def get_all_languages():
         language_dict['tours_id'] = tour_list
         language_data.append(language_dict)
         
-    return jsonify(language_data)
+    return {language['id']: language for language in language_data}
 
 
 
@@ -36,4 +36,4 @@ def get_one_language(id):
         return jsonify({"errors": "Language not found"}), 404
 
     language_dict = language.to_dict()
-    return language_dict
+    return {language_dict['id']: language_dict}

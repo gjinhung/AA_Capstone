@@ -24,7 +24,44 @@ def authenticate():
     Authenticates a user.
     """
     if current_user.is_authenticated:
-        return current_user.to_dict()
+        user = User.query.get(current_user.id)
+        user_dict = user.to_dict()
+
+        #set reviews
+        reviews = []
+        u_reviews = user.reviews
+        for rev in u_reviews:
+            reviews.append(rev.average_rating)
+    
+        rev_sum = sum(reviews)
+        if not len(reviews):
+            rating = 0
+        else:
+            rating = round((rev_sum/len(reviews)),2)
+
+        user_dict['rating'] = rating
+
+        #set bookings id
+
+        bookings_id = []
+        u_bookings = user.tourist_tours
+
+        for book in u_bookings:
+            bookings_id.append(book.id)
+
+        user_dict['booking_ids'] = bookings_id
+
+        #set tours id
+
+        tours_id = []
+        u_tours = user.tours_given
+
+        for tours in u_tours:
+            tours_id.append(tours.id)
+
+        user_dict['tour_ids'] = tours_id
+
+        return user_dict
     return {'errors': ['Unauthorized']}
 
 

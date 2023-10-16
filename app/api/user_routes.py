@@ -12,7 +12,11 @@ def users():
     Query for all users and returns them in a list of user dictionaries
     """
     users = User.query.all()
-    return {'users': [user.to_dict() for user in users]}
+    users_data = []
+    for user in users:
+        users_data.append(user.to_dict())
+    
+    return {'users': {user['id']: user for user in users_data}}
 
 
 @user_routes.route('/<int:id>')

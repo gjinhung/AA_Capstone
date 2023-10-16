@@ -22,7 +22,8 @@ def get_all_bookings():
         # booking_dict['start_time'] = start_time
         # booking_dict['date'] = date
         bookings_data.append(booking_dict)
-    return jsonify(bookings_data)
+    # return jsonify(bookings_data)
+    return {"bookings": {booking['id']: booking for booking in bookings_data}}
 
 @booking_routes.route('/<int:id>')
 def get_one_booking(id):
@@ -32,7 +33,7 @@ def get_one_booking(id):
         return jsonify({"errors": "Booking not found"}), 404
 
     booking_dict = booking.to_dict()
-    return booking_dict
+    return {"bookings": {booking_dict['id']: booking_dict}}
 
 @booking_routes.route('/tour/<int:tourId>/new', methods=['POST'])
 @login_required
@@ -59,13 +60,6 @@ def add_booking(tourId):
         return booking.to_dict()
     else:
         return {"errors": validation_errors_to_error_messages(form.errors)}
-#     {
-#     "errors": [
-#         "date : This field is required.",
-#         "start_time : This field is required.",
-#         "duration : This field is required."
-#     ]
-# }
 
 @booking_routes.route('/<int:id>', methods=['PUT'])
 @login_required
