@@ -19,7 +19,8 @@ def users():
         reviews_list = []
         u_reviews = user.reviews
         for rev in u_reviews:
-            reviews.append(rev.average_rating)
+            # reviews.append(rev.average_rating)
+            reviews.append(rev.rating)
             reviews_list.append(rev.to_dict())
     
         rev_sum = sum(reviews)
@@ -55,7 +56,8 @@ def user(id):
     reviews_list = []
     u_reviews = user.reviews
     for rev in u_reviews:
-        reviews.append(rev.average_rating)
+        # reviews.append(rev.average_rating)
+        reviews.append(rev.rating)
         reviews_list.append(rev.to_dict())
     
     rev_sum = sum(reviews)
@@ -94,7 +96,8 @@ def current():
     reviews = []
     u_reviews = user.reviews
     for rev in u_reviews:
-        reviews.append(rev.average_rating)
+        # reviews.append(rev.average_rating)
+        reviews.append(rev)
     
     rev_sum = sum(reviews)
 

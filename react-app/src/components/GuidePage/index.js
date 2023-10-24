@@ -20,7 +20,10 @@ export default function GuidePage() {
     const languages = useSelector((state) => state.languages)
     const bookings = useSelector((state) => state.bookings)
     const reviews = useSelector((state) => state.reviews)
-    const tours = useSelector((state) => state.tours)
+    const current_user = useSelector((state) => state.session.user)
+    const [postReview, setPostReview] = useState(false)
+    const [reviewDes, setReviewDes] = useState('')
+    const [stars, setStars] = useState(0);
 
     useEffect(() => {
         setLoaded(false)
@@ -32,8 +35,18 @@ export default function GuidePage() {
                             dispatch(getSpecialties())).then(() =>
                                 dispatch(getReviews())).then(() =>
                                     dispatch(getLanguages())).then(() => setLoaded(true));
-    }, [dispatch]);
+        if (current_user) {
+            if (current_user.id != +id) {
+                setPostReview(true)
+            }
 
+        }
+
+    }, [dispatch, current_user]);
+
+    function handleSubmit() {
+        return
+    }
 
     if (!loaded) {
         return (
@@ -64,11 +77,19 @@ export default function GuidePage() {
             }
         })
 
+        function resetDate(str_date) {
+            let months = ["January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"];
+            const date = new Date(str_date)
+            let year = date.getFullYear()
+            let month = months[date.getMonth()]
+            let day = date.getDate()
+            return (`${month} ${day}, ${year}`)
 
-        console.log(review_lists)
+        }
 
 
-        let editOption = (
+        let postOption = (
             <>
                 <div>
                     edit</div>
@@ -100,6 +121,23 @@ export default function GuidePage() {
                             return (<li key={idx}>{languages[language_id].language}</li>)
                         })}
                         <h4>Reviews</h4>
+                        {postReview &&
+                            (<form onSubmit={handleSubmit}>
+                                <div className='text-container'>
+                                    <textarea
+                                        style={{ resize: "none" }}
+                                        name="text"
+                                        rows={2}
+                                        cols={40}
+                                        placeholder="Leave your review here..."
+                                        value={reviewDes}
+                                        onChange={(e) => setReviewDes(e.target.value)}
+                                    >
+                                    </textarea>
+                                </div>
+
+                            </form>)
+                        }
                         {review_lists.map((review, idx) => {
                             return (
                                 <div key={idx}>
@@ -110,10 +148,14 @@ export default function GuidePage() {
                                             key={user.id}
                                         />
                                     </div>
-                                    <div className="review_body">{review.review_body}</div>
-                                    <div>Communications Rating: {review.communication_rating}</div>
-                                    <div>Knowledgeability Rating: {review.knowledgeability_rating}</div>
-                                    <div>Professionalism Rating: {review.Professionalism}</div>
+                                    <div className='review'>
+                                        <div>{users[review.reviewer_id].first_name} {resetDate(review.updated_at)}</div>
+                                        <div>Communications Rating: {review.communication_rating}</div>
+                                        <div>Knowledgeability Rating: {review.knowledgeability_rating}</div>
+                                        <div>Professionalism Rating: {review.Professionalism_rating}</div>
+                                        <div className="review_body">{review.review_body}</div>
+                                    </div>
+
                                 </div >
                             )
                         })}

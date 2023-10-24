@@ -40,16 +40,17 @@ def add_review(tourId):
         return jsonify({"errors": "Cannot review your own tour"})
 
     if form.validate_on_submit():
-        average = (form.communication_rating.data + 
-                   form.knowledgability_rating.data + 
-                   form.professionalism_rating.data)/3
+        # average = (form.communication_rating.data + 
+        #            form.knowledgability_rating.data + 
+        #            form.professionalism_rating.data)/3
         review = Review(
             reviewer_id=current_user.id,
             tour_id=tour.id,
-            communication_rating=form.communication_rating.data,
-            knowledgability_rating=form.knowledgability_rating.data,
-            professionalism_rating=form.professionalism_rating.data,
-            average_rating=round(average, 2),
+            # communication_rating=form.communication_rating.data,
+            # knowledgability_rating=form.knowledgability_rating.data,
+            # professionalism_rating=form.professionalism_rating.data,
+            # average_rating=round(average, 2),
+            rating=form.rating.data,
             review_body=form.review_body.data,
             created_at=datetime.datetime.utcnow(),
             updated_at=datetime.datetime.utcnow()
@@ -72,18 +73,20 @@ def edit_review(id):
         return jsonify({"errors": "Unauthorized to edit this review"}), 403
 
     if form.validate_on_submit():
-        attributes_to_update = ['communication_rating', 'knowledgability_rating', 'professionalism_rating', 'review_body']
+        # attributes_to_update = ['communication_rating', 'knowledgability_rating', 'professionalism_rating', 'review_body']
+        attributes_to_update = ['rating', 'review_body']
+
         for attr in attributes_to_update:
             if hasattr(form, attr):
                 setattr(review, attr, getattr(form, attr).data)
 
 
         review.updated_at = datetime.datetime.utcnow()
-        average = (form.communication_rating.data + 
-                   form.knowledgability_rating.data + 
-                   form.professionalism_rating.data)/3
+        # average = (form.communication_rating.data + 
+        #            form.knowledgability_rating.data + 
+        #            form.professionalism_rating.data)/3
         
-        review.average_rating = round(average, 2)
+        # review.average_rating = round(average, 2)
 
         db.session.commit()
         

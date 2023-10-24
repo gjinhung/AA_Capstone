@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: a95c706db8ec
+Revision ID: 7b97dfacc6e1
 Revises: 
-Create Date: 2023-10-14 15:56:46.935696
+Create Date: 2023-10-23 21:45:11.510417
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a95c706db8ec'
+revision = '7b97dfacc6e1'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -57,7 +57,7 @@ def upgrade():
     sa.Column('first_name', sa.String(length=50), nullable=False),
     sa.Column('last_name', sa.String(length=50), nullable=False),
     sa.Column('joined_on', sa.DateTime(), nullable=False),
-    sa.Column('student', sa.Boolean(create_constraint=50), nullable=False),
+    sa.Column('student', sa.Boolean(), nullable=False),
     sa.Column('graduation_date', sa.DateTime(), nullable=True),
     sa.Column('profile_pic', sa.String(length=255), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
@@ -97,10 +97,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('reviewer_id', sa.Integer(), nullable=True),
     sa.Column('tour_id', sa.Integer(), nullable=True),
-    sa.Column('average_rating', sa.Float(), nullable=False),
-    sa.Column('communication_rating', sa.Integer(), nullable=False),
-    sa.Column('knowledgability_rating', sa.Integer(), nullable=False),
-    sa.Column('professionalism_rating', sa.Integer(), nullable=False),
+    sa.Column('rating', sa.Integer(), nullable=False),
     sa.Column('review_body', sa.String(length=255), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),

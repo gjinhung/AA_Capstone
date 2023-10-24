@@ -32,7 +32,7 @@ def authenticate():
         reviews = []
         u_reviews = user.reviews
         for rev in u_reviews:
-            reviews.append(rev.average_rating)
+            reviews.append(rev.rating)
     
         rev_sum = sum(reviews)
         if not len(reviews):
