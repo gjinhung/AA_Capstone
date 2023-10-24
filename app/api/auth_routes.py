@@ -3,6 +3,7 @@ from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
+import datetime
 
 auth_routes = Blueprint('auth', __name__)
 
@@ -11,10 +12,10 @@ def validation_errors_to_error_messages(validation_errors):
     """
     Simple function that turns the WTForms validation errors into a simple list
     """
-    errorMessages = []
+    errorMessages = {}
     for field in validation_errors:
         for error in validation_errors[field]:
-            errorMessages.append(f'{field} : {error}')
+            errorMessages[field] = error
     return errorMessages
 
 
@@ -98,12 +99,28 @@ def sign_up():
     """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    data = form.data
+    if data['student'] == 'true':
+        data['student'] = True
+    else:
+        data['student'] = False
+
+
     if form.validate_on_submit():
+
         user = User(
             username=form.data['username'],
             email=form.data['email'],
-            password=form.data['password']
-        )
+            password=form.data['password'],
+            first_name=form.data['first_name'],
+            last_name=form.data['last_name'],
+            profile_pic=form.data['profile_pic'],
+            student=data['student'],
+            graduation_date=form.data['graduation_date'],
+            joined_on=datetime.datetime.utcnow(),
+            created_at=datetime.datetime.utcnow(),
+            updated_at=datetime.datetime.utcnow()
+            )
         db.session.add(user)
         db.session.commit()
         login_user(user)

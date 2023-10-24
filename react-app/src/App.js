@@ -1,19 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import MainPage from './components/MainPage'
+import LoginSignUp from './components/LogInSignUp'
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
-import { useNav } from './context/NavigationBar'
+import GuidePage from "./components/GuidePage";
 
 function App() {
   const dispatch = useDispatch();
-  const { isLoaded, toggleNav } = useNav()
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    dispatch(authenticate()).then(() => toggleNav(true));
-  }, [dispatch, toggleNav]);
+    dispatch(authenticate()).then(() => setIsLoaded(true));
+  }, [dispatch]);
 
   return (
     <>
@@ -25,6 +26,12 @@ function App() {
           </Route>
           <Route path="/signup">
             <SignupFormPage />
+          </Route>
+          <Route path='/slider'>
+            <LoginSignUp />
+          </Route>
+          <Route path='/guide/:id'>
+            <GuidePage />
           </Route>
           <Route path=''>
             <MainPage />

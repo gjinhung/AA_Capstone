@@ -26,4 +26,20 @@ def get_all_cities():
         
     return {city['id']: city for city in city_data}
 
+@city_routes.route('/<int:id>')
+def get_one_city(id):
+    city = City.query.get(id)
+
+    if not city:
+        return jsonify({"errors": "City not found"}), 404
+    city_dict = city.to_dict()
+    tours = city.tours_given
+    tour_list = []
+    for tour in tours:
+        t_dic = tour.id
+        tour_list.append(t_dic)
+    city_dict['tours_id'] = tour_list
+        
+    return {city_dict['id']: city_dict}
+
 

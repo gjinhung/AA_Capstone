@@ -13,12 +13,19 @@ def get_all_bookings():
     bookings_data = []
     for booking in bookings:
         # # to convert to string use strftime
-        # date_format = '%Y-%m-%d'
-        # date = (booking.date).strftime(date_format)
+        date_format = '%Y-%m-%d'
+        date = (booking.date).strftime(date_format)
         # time_format = '%H:%M:%S'
         # start_time = (booking.start_time).strftime(time_format)
         # # to convert to datetime.date.fromisoformat(start_time)
+        today = datetime.date.today()
+        booking_date = datetime.date.fromisoformat(date)
         booking_dict = booking.to_dict()
+        diff = (booking_date-today).days
+        occured = False
+        if diff <= 0:
+            occured = True
+        booking_dict['completed'] = occured
         # booking_dict['start_time'] = start_time
         # booking_dict['date'] = date
         bookings_data.append(booking_dict)
@@ -31,8 +38,17 @@ def get_one_booking(id):
 
     if not booking:
         return jsonify({"errors": "Booking not found"}), 404
-
+    
+    date_format = '%Y-%m-%d'
+    date = (booking.date).strftime(date_format)
+    today = datetime.date.today()
+    booking_date = datetime.date.fromisoformat(date)
     booking_dict = booking.to_dict()
+    diff = (booking_date-today).days
+    occured = False
+    if diff <= 0:
+        occured = True
+    booking_dict['completed'] = occured
     return {"bookings": {booking_dict['id']: booking_dict}}
 
 @booking_routes.route('/tour/<int:tourId>/new', methods=['POST'])

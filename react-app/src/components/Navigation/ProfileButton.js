@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/session";
-import OpenModalButton from "../OpenModalButton";
-import LoginFormModal from "../LoginFormModal";
-import SignupFormModal from "../SignupFormModal";
+import { useLogSignIn } from "../../context/NavToggle"
+
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const { logSignIn, setLogSignIn } = useLogSignIn()
   const ulRef = useRef();
 
   const openMenu = () => {
@@ -15,7 +15,14 @@ function ProfileButton({ user }) {
     setShowMenu(true);
   };
 
+  const openLoginSignUp = () => {
+    console.log("clicked")
+    console.log(logSignIn)
+    setLogSignIn(!logSignIn)
+  }
+
   useEffect(() => {
+
     if (!showMenu) return;
 
     const closeMenu = (e) => {
@@ -31,18 +38,47 @@ function ProfileButton({ user }) {
 
   const handleLogout = (e) => {
     e.preventDefault();
+    setLogSignIn(false)
+    setShowMenu(false)
     dispatch(logout());
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-  const closeMenu = () => setShowMenu(false);
+
+  let show
+
+  if (!user) {
+    show = (
+      <button onClick={openLoginSignUp}>
+        <>Log In / Sign Up</>
+      </button>
+    )
+  } else {
+    show = (
+      <>
+        <div onClick={openMenu}>
+          <i className="fas fa-user-circle" />
+          <>
+            <ul className={ulClassName} ref={ulRef}>
+              <li>{user.username}</li>
+              <li>{user.email}</li>
+              <li>
+                <button onClick={handleLogout}>Log Out</button>
+              </li>
+            </ul>
+          </>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
-      <ul className={ulClassName} ref={ulRef}>
+      {show}
+      {/* <button onClick={openMenu}>
+        {!user ? (<>Log In / Sign Up</>) : (<i className="fas fa-user-circle" />)}
+      </button> */}
+      {/* <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
             <li>{user.username}</li>
@@ -52,7 +88,7 @@ function ProfileButton({ user }) {
             </li>
           </>
         ) : (
-          <>
+          <div className='modals'>
             <OpenModalButton
               buttonText="Log In"
               onItemClick={closeMenu}
@@ -64,9 +100,9 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-          </>
+          </div>
         )}
-      </ul>
+      </ul > */}
     </>
   );
 }

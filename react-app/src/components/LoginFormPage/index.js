@@ -9,7 +9,7 @@ function LoginFormPage() {
   const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   if (sessionUser) return <Redirect to="/" />;
 
@@ -22,35 +22,38 @@ function LoginFormPage() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <ul>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul>
+    // <div className="loginpage">
+    <form onSubmit={handleSubmit}
+      className="login-form">
+      <div className="form-group">
+        <h3 className="step-title">Log In</h3>
         <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <a style={{ color: "red" }}>{errors["email"]}</a>
         </label>
+        <input
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <label className="form-group">
         <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <a style={{ color: "red" }}>{errors["password"]}</a>
         </label>
-        <button type="submit">Log In</button>
-      </form>
-    </>
+        <input
+          type="password"
+          placeholder="Password"
+          autoComplete="off"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </label>
+      <button type="submit">Log In</button>
+    </form>
+    // </div>
   );
 }
 

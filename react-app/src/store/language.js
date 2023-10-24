@@ -17,9 +17,29 @@ export const getLanguages = () => async (dispatch) => {
 };
 
 
+export const getOneLanguage = (id) => async (dispatch) => {
+    const response = await fetch(`/api/languages/${id}`);
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(loadLanguages(data));
+    } else {
+        return (await response.json());
+    }
+};
+
+export const langByName = (language) => async (dispatch) => {
+    const response = await fetch(`/api/languages?language=${language}`);
+    if (response.ok) {
+        const data = await response.json();
+        return data
+    } else {
+        return (await response.json());
+    }
+};
+
 const initialState = { languages: null };
 
-const cities = (state = initialState, action) => {
+const languages = (state = initialState, action) => {
     // const newState = { ...state }
     switch (action.type) {
         case LOAD_LANGUAGES:
@@ -30,4 +50,4 @@ const cities = (state = initialState, action) => {
 }
 
 
-export default cities;
+export default languages;

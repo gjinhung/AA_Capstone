@@ -16,6 +16,25 @@ export const getCities = () => async (dispatch) => {
     }
 };
 
+export const getOneCity = (id) => async (dispatch) => {
+    const response = await fetch(`/api/city/${id}`);
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(loadCities(data));
+    } else {
+        return (await response.json());
+    }
+};
+
+export const cityByName = (city) => async (dispatch) => {
+    const response = await fetch(`/api/city?city=${city}`);
+    if (response.ok) {
+        const data = await response.json();
+        return data
+    } else {
+        return (await response.json());
+    }
+};
 
 const initialState = { cities: null };
 

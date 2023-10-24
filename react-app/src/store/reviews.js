@@ -111,7 +111,7 @@ const reviews = (state = initialState, action) => {
     const newState = { ...state }
     switch (action.type) {
         case LOAD_REVIEWS:
-            return { ...state, ...action.payload };
+            return { ...action.payload };
         case UPDATE_REVIEWS:
             const data = action.payload
             newState[data.id] = data

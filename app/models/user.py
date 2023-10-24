@@ -4,9 +4,6 @@ from flask_login import UserMixin
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.schema import Column, ForeignKey, Table
 
-# Base = declarative_base()
-
-
 tour_specialties = db.Table(
     "tour_specialties",
     db.Model.metadata,
@@ -36,7 +33,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     joined_on = db.Column(db.DateTime(), nullable=False)
-    student = db.Column(db.Boolean(50), nullable=False)
+    student = db.Column(db.Boolean(), nullable=False)
     graduation_date = db.Column(db.DateTime(), nullable=True)
     profile_pic = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime(), nullable=False)
