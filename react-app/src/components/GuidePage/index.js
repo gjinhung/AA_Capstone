@@ -1,52 +1,109 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getTours } from "../../store/tour";
-import { getBookings } from "../../store/booking";
+import { getReviews, newReview } from "../../store/reviews";
 import { allUsers } from "../../store/users";
-import { getDates } from "../../store/date";
-import { getCities } from "../../store/city";
-import { getSpecialties } from "../../store/specialty";
-import { getReviews } from "../../store/reviews";
-import { getLanguages } from "../../store/language";
+import StarsRating from "./StarRating";
+import OpenModalButton from "../OpenModalButton"
+import EditReviewModal from "../EditReviewModal";
+import DeleteReviewModal from '../DeleteReviewModal'
+import PostBooking from "./Booking";
+
 import './GuidePage.css'
 
-export default function GuidePage() {
+export default function GuidePage({ loaded }) {
     const { id } = useParams()
     const dispatch = useDispatch()
-    const [loaded, setLoaded] = useState(false)
     const users = useSelector((state) => state.users)
     const user = users[id]
+    const guide = users[id]
     const languages = useSelector((state) => state.languages)
-    const bookings = useSelector((state) => state.bookings)
     const reviews = useSelector((state) => state.reviews)
     const current_user = useSelector((state) => state.session.user)
-    const [postReview, setPostReview] = useState(false)
-    const [reviewDes, setReviewDes] = useState('')
+    const [showPost, setShowPost] = useState(false)
+    const [errors, setErrors] = useState({});
     const [stars, setStars] = useState(0);
+    const [comment, setComment] = useState("");
+    const [formDisabled, setFormDisabled] = useState(true);
+    const [canPost, setCanPost] = useState(true)
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [canEdit, setCanEdit] = useState(false)
 
     useEffect(() => {
-        setLoaded(false)
-        dispatch(allUsers()).then(() =>
-            dispatch(getTours())).then(() =>
-                dispatch(getBookings())).then(() =>
-                    dispatch(getDates())).then(() =>
-                        dispatch(getCities())).then(() =>
-                            dispatch(getSpecialties())).then(() =>
-                                dispatch(getReviews())).then(() =>
-                                    dispatch(getLanguages())).then(() => setLoaded(true));
+        setCanPost(true)
+        setCanEdit(false)
         if (current_user) {
-            if (current_user.id != +id) {
-                setPostReview(true)
-            }
-
+            setLoggedIn(true)
+            let reviews_of_guide = users[id].reviews_of_guide
+            reviews_of_guide.forEach((review) => {
+                if (review.reviewer_id === current_user.id) {
+                    setCanPost(false)
+                    setCanEdit(true)
+                }
+            })
         }
 
-    }, [dispatch, current_user]);
+        if (!guide.tours_given.length) {
+            setCanPost(false)
+        }
+    }, [canEdit, setCanEdit, current_user, id, reviews, users, guide.tours_given.length]);
 
-    function handleSubmit() {
-        return
+    useEffect(() => {
+        const errors = {};
+        if (stars && stars < 1) {
+            errors.stars = "Please input a star rating";
+        }
+        if (comment && comment.length < 10) {
+            errors.comment = "Comment needs a minimum of 10 characters";
+        }
+        setErrors(errors);
+    }, [stars, comment]);
+
+
+    useEffect(() => {
+        if (!stars || !comment || stars < 1 || comment.length < 10) {
+            setFormDisabled(true);
+        } else {
+            setFormDisabled(false);
+        }
+    }, [dispatch, stars, comment]);
+
+
+    const reviewSubmit = async (e) => {
+        e.preventDefault();
+        setErrors({});
+
+        let submittedReview = {
+            'rating': stars,
+            'review_body': comment,
+            'guide_id': +id
+        }
+
+        await dispatch(newReview(submittedReview, +id,)).then(() => {
+            dispatch(getReviews()).then(() =>
+                dispatch(allUsers())).then(() => {
+                    setShowPost(false)
+                    setCanPost(false)
+                }).catch(async (res) => {
+                    const data = await res.json();
+                    if (data && data.errors) {
+                        setErrors(data.errors);
+                    }
+                });
+        })
+
+
+
     }
+
+    function reviewToggle() {
+        setComment('')
+        setStars(0)
+        setShowPost(!showPost)
+        setCanPost(!canPost)
+
+    }
+
 
     if (!loaded) {
         return (
@@ -57,11 +114,8 @@ export default function GuidePage() {
     } else {
 
         let language_set = new Set()
-        let num_tours_given = user.reviews.length
-        let review_list = Object.values(user.reviews)
-        let booking_list = bookings
+        let num_tours_given = users[id].tours_given.length
         let review_lists = [] //get the reviewers with this guide_id
-
         let guide_tours = []
 
         let normalized_tours = Object.values(user.tours_given)
@@ -72,7 +126,7 @@ export default function GuidePage() {
 
         let normalized_reviews = Object.values(reviews)
         normalized_reviews.forEach((review) => {
-            if (review.tour_id === +id) {
+            if (review.guide_id === +id) {
                 review_lists.push(review)
             }
         })
@@ -85,19 +139,15 @@ export default function GuidePage() {
             let month = months[date.getMonth()]
             let day = date.getDate()
             return (`${month} ${day}, ${year}`)
-
         }
 
+        const onChange = (stars) => {
+            setStars(stars);
+        }
 
-        let postOption = (
-            <>
-                <div>
-                    edit</div>
-                <div>
-                    delete
-                </div>
-            </>
-        )
+        const onValueChanged = (input) => {
+            setCanPost(input);
+        }
 
         const language_arr = Array.from(language_set)
 
@@ -111,18 +161,23 @@ export default function GuidePage() {
                             alt={user.id}
                             key={user.id}
                         />
-                        <p> {user.first_name} {user.last_name}</p>
+                        <div> {user.first_name} {user.last_name}</div>
                         <>
-                            {user.rating} <i className="fa-solid fa-star"></i> {`(${num_tours_given} ${num_tours_given = 1 ? 'tour' : "tours"} given)`}
+                            {user.rating} <i className="fa-solid fa-star"></i> {`(${num_tours_given} ${num_tours_given === 1 ? 'tour' : "tours"} given)`}
 
                         </>
                         <div> <i className="fa-solid fa-language"></i> Languages I speak:</div>
                         {language_arr.map((language_id, idx) => {
                             return (<li key={idx}>{languages[language_id].language}</li>)
                         })}
+                        <hr />
                         <h4>Reviews</h4>
-                        {postReview &&
-                            (<form onSubmit={handleSubmit}>
+                        {current_user && current_user.id !== +id && canPost &&
+                            (<button
+                                onClick={reviewToggle}>Post a Review</button>)
+                        }
+                        {showPost &&
+                            (<form onSubmit={reviewSubmit}>
                                 <div className='text-container'>
                                     <textarea
                                         style={{ resize: "none" }}
@@ -130,17 +185,35 @@ export default function GuidePage() {
                                         rows={2}
                                         cols={40}
                                         placeholder="Leave your review here..."
-                                        value={reviewDes}
-                                        onChange={(e) => setReviewDes(e.target.value)}
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
                                     >
                                     </textarea>
                                 </div>
+                                {errors.comment && errors.comment ? <>{errors.comment}</> : <div className="empty-space"> </div>}
+                                <div className="rating-input">
+                                    <div>Rate Your Experience: </div>
+                                    <StarsRating disabled={false} stars={stars} onChange={onChange} />
+                                    {errors.rating && <div>{errors.rating}</div>}
+                                </div>
 
+                                <button
+                                    className={formDisabled ? "submit-button-inactive" : "submit-button"}
+                                    type="submit"
+                                    disabled={formDisabled}
+                                >
+                                    Submit Your Review
+                                </button>
+                                <button
+                                    onClick={reviewToggle}>
+                                    Cancel
+                                </button>
                             </form>)
                         }
                         {review_lists.map((review, idx) => {
                             return (
-                                <div key={idx}>
+                                <div
+                                    key={idx}>
                                     <div className="profile_pic">
                                         <img src={users[review.reviewer_id].profile_pic}
                                             className='reviewImg'
@@ -148,12 +221,32 @@ export default function GuidePage() {
                                             key={user.id}
                                         />
                                     </div>
-                                    <div className='review'>
+                                    <div
+                                        className='review'>
                                         <div>{users[review.reviewer_id].first_name} {resetDate(review.updated_at)}</div>
-                                        <div>Communications Rating: {review.communication_rating}</div>
-                                        <div>Knowledgeability Rating: {review.knowledgeability_rating}</div>
-                                        <div>Professionalism Rating: {review.Professionalism_rating}</div>
+                                        <div>Rating: {review.rating}</div>
                                         <div className="review_body">{review.review_body}</div>
+
+                                    </div>
+                                    <div>
+                                        {loggedIn && current_user && review.reviewer_id === current_user.id && (
+                                            <div className="reviewButtons">
+                                                <OpenModalButton
+                                                    buttonText="Edit"
+                                                    modalComponent={
+                                                        <EditReviewModal guide_id={id} review={review} />
+                                                    }
+                                                    id={"review-edit-button"}
+                                                />
+                                                <OpenModalButton
+                                                    buttonText="Delete"
+                                                    modalComponent={
+                                                        <DeleteReviewModal review={review} onChangeValue={onValueChanged} />
+                                                    }
+                                                    id={"review-delete-button"}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
 
                                 </div >
@@ -162,8 +255,9 @@ export default function GuidePage() {
                     </div>
                 </div>
                 <div className="right-side">
-
+                    <PostBooking />
                 </div>
+
             </div >
         )
     }

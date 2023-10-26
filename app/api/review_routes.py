@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from ..models import db , Review, TourGuide
+from ..models import db , Review, User
 from flask_login import current_user, login_required
 from ..forms.review_form import ReviewForm
 import datetime
@@ -26,17 +26,17 @@ def get_one_review(id):
     return {'reviews': {review_dict['id']: review_dict}}
 
 
-@review_routes.route('/tour/<int:tourId>', methods=['POST'])
+@review_routes.route('/guide/<int:guideId>', methods=['POST'])
 @login_required
-def add_review(tourId):
+def add_review(guideId):
     form = ReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
-    tour = TourGuide.query.get_or_404(tourId)  
+    guide = User.query.get_or_404(guideId)  
 
-    if not tour:
-        return jsonify({"errors": "Tour not found"}), 404
+    if not guide:
+        return jsonify({"errors": "Guide not found"}), 404
     
-    if current_user.id is tour.guide_id:
+    if current_user.id is guide.id:
         return jsonify({"errors": "Cannot review your own tour"})
 
     if form.validate_on_submit():
@@ -45,7 +45,7 @@ def add_review(tourId):
         #            form.professionalism_rating.data)/3
         review = Review(
             reviewer_id=current_user.id,
-            tour_id=tour.id,
+            guide_id=+guideId,
             # communication_rating=form.communication_rating.data,
             # knowledgability_rating=form.knowledgability_rating.data,
             # professionalism_rating=form.professionalism_rating.data,
@@ -101,10 +101,7 @@ def delete_review(id):
 
     if not review:
         return jsonify({"errors": "Review not found"}), 404
-
-    if current_user.id != review.reviewer_id:
-        return jsonify({"errors": "Unauthorized to delete this review"}), 403
-
+    
     try:
         db.session.delete(review)
         db.session.commit()

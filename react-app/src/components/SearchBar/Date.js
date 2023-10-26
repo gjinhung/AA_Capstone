@@ -1,17 +1,12 @@
-import React, { useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useRef } from "react";
 import { useState } from "react";
 import { useSearch } from "../../context/SearchBar";
 
 export default function DateSelection() {
     let menuRef = useRef()
     let dateRef = useRef('')
-    const [show, setShow] = useState(false)
-    // const [date, setDate] = useState('');
     const [dayOfWk, setDayOfWk] = useState('');
     const [error, setError] = useState('')
-    // const options = []
-    // const dates = useSelector((state) => state.dates)
     const { searchTerms, setSearch } = useSearch()
 
     // useEffect(() => {
@@ -82,9 +77,9 @@ export default function DateSelection() {
                     onChange={(e) => handleChange(e.target.value)}
                 />
                 {error ? <>
-                    <p style={{ color: "red" }}>{error}</p>
+                    <div style={{ color: "red" }}>{error}</div>
                 </> :
-                    <p>Selected Date: {dayOfWk}</p>
+                    <div>Selected Date: {dayOfWk}</div>
                 }
             </div>
             <div onClick={() => reset()}>

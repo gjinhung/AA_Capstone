@@ -52,11 +52,10 @@ export const newTour = (tour) => async (dispatch) => {
     if (response.ok) {
         const data = await response.json();
         dispatch(postTour(data));
-        return data
     } else if (response.status < 500) {
         const data = await response.json();
-        if (data.errors) {
-            return data.errors;
+        if (data) {
+            return data;
         }
     } else {
         return ["A posting error occurred. Please try again."];

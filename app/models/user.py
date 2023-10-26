@@ -173,7 +173,7 @@ class Review(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     reviewer_id = db.Column(db.Integer,db.ForeignKey(add_prefix_for_prod("users.id")))
-    tour_id = db.Column(db.Integer,db.ForeignKey(add_prefix_for_prod("tour_guides.id")))
+    guide_id = db.Column(db.Integer, nullable=False)
     # average_rating = db.Column(db.Float, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     # communication_rating = db.Column(db.Integer, nullable=False)
@@ -184,13 +184,12 @@ class Review(db.Model):
     updated_at = db.Column(db.DateTime, default=db.func.now())
 
     reviewer = db.relationship("User", back_populates="reviews")
-    tour = db.relationship("TourGuide", back_populates="reviews")
 
     def to_dict(self):
         return {
             'id': self.id,
-            'tour_id': self.tour_id,
             'reviewer_id': self.reviewer_id,
+            'guide_id': self.guide_id,
             # 'average_rating': self.average_rating,
             # 'communication_rating': self.communication_rating,
             # 'knowledgeability_rating': self.knowledgability_rating,
@@ -239,7 +238,6 @@ class TourGuide(db.Model):
     cities = db.relationship("City", back_populates="tours_given")
     language = db.relationship("Language", back_populates="tours_given")
     bookings = db.relationship("Booking", back_populates='tour_guide')
-    reviews = db.relationship("Review", back_populates="tour")
 
     specialties = db.relationship("Specialty", secondary=tour_specialties, back_populates='tours')
     dates = db.relationship("Date", secondary=tour_dates, back_populates='tours')

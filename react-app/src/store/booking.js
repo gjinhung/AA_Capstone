@@ -54,9 +54,10 @@ export const newBooking = (booking, id) => async (dispatch) => {
         dispatch(postBooking(data));
         return data
     } else if (response.status < 500) {
+        console.log('booking failed')
         const data = await response.json();
         if (data.errors) {
-            return data.errors;
+            return data;
         }
     } else {
         return ["A new booking error occurred. Please try again."];

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/session";
 import { useLogSignIn } from "../../context/NavToggle"
+import { NavLink } from 'react-router-dom';
 
 
 function ProfileButton({ user }) {
@@ -16,8 +17,8 @@ function ProfileButton({ user }) {
   };
 
   const openLoginSignUp = () => {
-    console.log("clicked")
-    console.log(logSignIn)
+    // console.log("clicked")
+    // console.log(logSignIn)
     setLogSignIn(!logSignIn)
   }
 
@@ -46,7 +47,6 @@ function ProfileButton({ user }) {
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   let show
-
   if (!user) {
     show = (
       <button onClick={openLoginSignUp}>
@@ -58,14 +58,16 @@ function ProfileButton({ user }) {
       <>
         <div onClick={openMenu}>
           <i className="fas fa-user-circle" />
+          <ul className={ulClassName} ref={ulRef}></ul>
           <>
-            <ul className={ulClassName} ref={ulRef}>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
-              <li>
-                <button onClick={handleLogout}>Log Out</button>
-              </li>
-            </ul>
+            <li>Welcome, {user.username}</li>
+            <li>{user.first_name} {user.last_name}</li>
+            <li>{user.email}</li>
+            <li className="view-logout-container">
+              <NavLink exact to="/manage" className="view-business-button">View Bookings</NavLink>
+              {/* <NavLink exact to="/business/create-new-business" className="create-business-button">Create a business</NavLink> */}
+              <button onClick={handleLogout} className="logout-red-button">Log Out</button>
+            </li>
           </>
         </div>
       </>

@@ -107,36 +107,43 @@ def seed_users():
         updated_at=datetime.datetime.now())
         
     monday = Date(
+        id=0,
         date="Monday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     tuesday = Date(
+        id=1,
         date="Tuesday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     wednesday = Date(
+        id=2,
         date="Wednesday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     thursday = Date(
+        id=3,
         date="Thursday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     friday = Date(
+        id=4,
         date="Friday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     saturday = Date(
+        id=5,
         date="Saturday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     sunday = Date(
+        id=6,
         date="Sunday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now()) 
@@ -192,8 +199,8 @@ def seed_users():
     tour3.dates.append(monday)
 
     review1 = Review(
-        reviewer_id=3, 
-        tour_id=1,
+        reviewer_id=3,
+        guide_id=1,
         # communication_rating=5,
         # knowledgability_rating=4,
         # professionalism_rating=5,
@@ -204,8 +211,8 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     review2 = Review(
-        reviewer_id=3, 
-        tour_id=2,
+        reviewer_id=3,
+        guide_id=2,
         # communication_rating=5,
         # knowledgability_rating=4,
         # professionalism_rating=5,
@@ -217,7 +224,7 @@ def seed_users():
     
     review3 = Review(
         reviewer_id=1, 
-        tour_id=2,
+        guide_id=2,
         # communication_rating=5,
         # knowledgability_rating=4,
         # professionalism_rating=5,

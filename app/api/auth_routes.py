@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, session, request
-from app.models import User, db
+from app.models import User, db, Review
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -27,41 +27,31 @@ def authenticate():
     if current_user.is_authenticated:
         user = User.query.get(current_user.id)
         user_dict = user.to_dict()
-
-        #set reviews
-        reviews = []
-        u_reviews = user.reviews
-        for rev in u_reviews:
-            reviews.append(rev.rating)
+        reviews_list = []
+        reviews_given = user.reviews
+        for rev in reviews_given:
+            reviews_list.append(rev.to_dict())
+        
+        guide_ratings = []
+        guide_reviews = []
+        reviews = Review.query.filter_by(guide_id=current_user.id).all()
+        
+        for review in reviews:
+            guide_ratings.append(review.rating)
+            guide_reviews.append(review.to_dict())
     
-        rev_sum = sum(reviews)
-        if not len(reviews):
+        
+        rev_sum = sum(guide_ratings)
+        if not len(guide_ratings):
             rating = 0
         else:
             rating = round((rev_sum/len(reviews)),2)
-
+        
         user_dict['rating'] = rating
-
-        #set bookings id
-
-        bookings_id = []
-        u_bookings = user.tourist_tours
-
-        for book in u_bookings:
-            bookings_id.append(book.id)
-
-        user_dict['booking_ids'] = bookings_id
-
-        #set tours id
-
-        tours_id = []
-        u_tours = user.tours_given
-
-        for tours in u_tours:
-            tours_id.append(tours.id)
-
-        user_dict['tour_ids'] = tours_id
-
+        user_dict['reviews_of_guide'] = guide_reviews
+        user_dict['reviews_given'] = reviews_list
+        user_dict['rating'] = rating
+    
         return user_dict
     return {'errors': ['Unauthorized']}
 
@@ -83,7 +73,7 @@ def login():
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@auth_routes.route('/logout')
+@auth_routes.route('/logout', )
 def logout():
     """
     Logs a user out

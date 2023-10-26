@@ -10,8 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { typeByName } from "../../store/specialty";
 import './index.css'
 import DateSelection from "./Date";
+import { NavLink } from "react-router-dom";
 
-export default function SearchBar() {
+export default function SearchBar({ loaded }) {
     const filterRef = useRef()
     const users = useSelector((state) => state.users)
     const tours = useSelector((state) => (state.tours))
@@ -71,10 +72,6 @@ export default function SearchBar() {
         const firstFilter = await city_tours.filter(value => language_tours.includes(value));
         const secondFilter = await firstFilter.filter(value => type_tours.includes(value))
         const thirdFilter = await secondFilter.filter(value => date_tours.includes(value))
-        // console.log(type_tours)
-        // console.log(language_tours)
-        // console.log(city_tours)
-        // console.log(date_tours)
 
         await thirdFilter.forEach((tour_id) => (
             guideSet.add(tours[tour_id].guide_id)
@@ -84,38 +81,44 @@ export default function SearchBar() {
 
         setGuide_Ids(guide_array)
     }
-
-
-    return (
-        <>
-            <div className="searchBarContainer">
-                <div className="searchBar">
-                    <DateSelection />
-                    <LanguageSelection />
-                    <CitySelection />
-                    <SpecialtySelection />
-                    <button
-                        ref={filterRef}
-                        onClick={onSubmit}
-                        className="search-button">
-                        Search
-                    </button>
-                </div>
-            </div>
-            <div className="image_container">
-                {guide_ids.map((guide_id, idx) => (
-                    <div className='tour-images-container'
-                        key={idx}>
-                        <img src={users[guide_id].profile_pic}
-                            className='tourImg'
-                            alt={users[guide_id].id}
-                            key={idx}
-                        />
-                        <div>name: {users[guide_id].first_name} {users[guide_id].last_name}</div>
-                        <div>rating: {users[guide_id].rating}</div>
+    // console.log(loaded)
+    if (!loaded) {
+        return <h2>Loading</h2>
+    } else {
+        // console.log(users)
+        return (
+            <>
+                <div className="searchBarContainer">
+                    <div className="searchBar">
+                        <DateSelection />
+                        <LanguageSelection />
+                        <CitySelection />
+                        <SpecialtySelection />
+                        <button
+                            ref={filterRef}
+                            onClick={onSubmit}
+                            className="search-button">
+                            Search
+                        </button>
                     </div>
-                ))}
-            </div>
-        </>
-    )
+                </div>
+                <div className="image_container">
+                    {guide_ids.map((guide_id, idx) => (
+                        <div className='tour-images-container'
+                            key={idx}>
+                            <NavLink exact to={`/guide/${guide_id}`}>
+                                <img src={users[guide_id].profile_pic}
+                                    className='tourImg'
+                                    alt={users[guide_id].id}
+                                    key={idx}
+                                />
+                            </NavLink>
+                            <div>name: {users[guide_id].first_name} {users[guide_id].last_name}</div>
+                            <div>rating: {users[guide_id].rating}</div>
+                        </div>
+                    ))}
+                </div>
+            </>
+        )
+    }
 }

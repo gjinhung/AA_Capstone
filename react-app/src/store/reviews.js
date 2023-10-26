@@ -1,5 +1,5 @@
 // constants
-const LOAD_REVIEWS = "review//LOAD_REVIEWS";
+const LOAD_REVIEWS = "review/LOAD_REVIEWS";
 const REMOVE_REVIEWS = "review/REMOVE_REVIEWS";
 const UPDATE_REVIEWS = 'review/UPDATE_REVIEWS'
 
@@ -13,9 +13,9 @@ const postReview = (data) => ({
     payload: data
 })
 
-const removeReview = (data) => ({
+const removeReview = (id) => ({
     type: REMOVE_REVIEWS,
-    payload: data
+    payload: id
 });
 
 export const getReviews = () => async (dispatch) => {
@@ -40,8 +40,8 @@ export const getOneReview = (id) => async (dispatch) => {
     }
 };
 
-export const newReview = (review, id) => async (dispatch) => {
-    const response = await fetch(`/api/reviews/tour/${id}`, {
+export const newReview = (review, guide_id) => async (dispatch) => {
+    const response = await fetch(`/api/reviews/guide/${guide_id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -90,7 +90,6 @@ export const deleteReview = (id) => async (dispatch) => {
     const response = await fetch(`/api/reviews/${id}`, {
         method: 'DELETE',
     });
-
     if (response.ok) {
         const data = await response.json();
         dispatch(removeReview(id));
@@ -108,7 +107,7 @@ export const deleteReview = (id) => async (dispatch) => {
 const initialState = { reviews: null };
 
 const reviews = (state = initialState, action) => {
-    const newState = { ...state }
+    let newState = { ...state }
     switch (action.type) {
         case LOAD_REVIEWS:
             return { ...action.payload };
@@ -117,7 +116,9 @@ const reviews = (state = initialState, action) => {
             newState[data.id] = data
             return newState
         case REMOVE_REVIEWS:
-            return newState[action.payload] = null
+            newState = { ...state }
+            delete newState[action.payload];
+            return newState
         default:
             return state;
     }

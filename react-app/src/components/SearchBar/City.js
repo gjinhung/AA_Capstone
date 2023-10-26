@@ -36,7 +36,6 @@ export default function CitySelection() {
     }
 
     function handleSelected(e) {
-        console.log(e)
         let obj = searchTerms
         obj.city = e
         setSelectCity(e)

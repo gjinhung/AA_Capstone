@@ -20,13 +20,6 @@ def get_all_tours():
         for booking in bookings:
             bookings_data.append(booking.id)
         tour_dict['bookings_id'] = bookings_data
-
-        # get reviews
-        reviews = tour.reviews
-        reviews_data = []
-        for review in reviews:
-            reviews_data.append(review.id)
-        tour_dict['reviews_id'] = reviews_data
         
         # get dates
         dates = tour.dates
@@ -60,12 +53,6 @@ def get_one_tour(id):
     for booking in bookings:
         bookings_data.append(booking.id)
     tour_dict['bookings_id'] = bookings_data
-    # get reviews
-    reviews = tour.reviews
-    reviews_data = []
-    for review in reviews:
-        reviews_data.append(review.id)
-    tour_dict['reviews_id'] = reviews_data
     
     # get dates
     dates = tour.dates
@@ -92,24 +79,43 @@ def add_tour():
     form['csrf_token'].data = request.cookies['csrf_token']
   
     errors = {}
+    if form.city.data:
+        city_name = (form.city.data).title()
+        city_data = City.query.filter_by(city=city_name).first()
 
-    city_name = (form.city.data).title()
-    city_data = City.query.filter_by(city=city_name).first()
-
-    language = (form.language.data).title()
-    language_data = Language.query.filter_by(language=language).first()
-    
-    if not language_data:
-        errors['language'] = "Language not found"
-
-    if not form.language.data:
-        errors['language'] = 'Language Required'
-    
-    if not city_data:
-        errors['city'] = 'City not found'
-
-    if not form.city.data:
+        if not city_data:
+            errors['city'] = 'City not found'
+    else:
         errors['city'] = 'City Required'
+
+    if form.language.data:
+        language = (form.language.data).title()
+        language_data = Language.query.filter_by(language=language).first()
+
+        if not language_data:
+            errors['language'] = "Language not found"
+    else:
+        errors['language'] = 'Language Required'
+
+
+    if not form.price.data:
+        errors['price'] = 'Price Required'
+
+    if not form.about.data:
+        errors['about'] = "Description of Tour Required"
+    elif len(form.about.data) <= 20:
+        errors['about'] = "Description needs at least 20 characters"
+    # if not language_data:
+    #     errors['language'] = "Language not found"
+
+    # if not form.language.data:
+    #     errors['language'] = 'Language Required'
+    
+    # if not city_data:
+    #     errors['city'] = 'City not found'
+
+    # if not form.city.data:
+    #     errors['city'] = 'City Required'
 
     if len(errors):
         return {"errors": errors}, 403
@@ -158,7 +164,6 @@ def add_tour():
 
         tour_dict['bookings_id'] = []
         tour_dict['dates'] = []
-        tour_dict['reviews_id'] = []
         tour_dict['specialties_id'] = []
 
         return tour_dict
@@ -249,7 +254,6 @@ def edit_review(id):
 
         tour_dict['bookings_id'] = []
         tour_dict['dates'] = []
-        tour_dict['reviews_id'] = []
         tour_dict['specialties_id'] = []
 
         return tour_dict

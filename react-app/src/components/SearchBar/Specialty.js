@@ -37,7 +37,6 @@ export default function SpecialtySelection() {
     }
 
     function handleSelected(e) {
-        console.log(e)
         let obj = searchTerms
         if (e.toLowerCase() === "any") {
             obj.type = ''

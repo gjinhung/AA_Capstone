@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import { useSearch } from "../../context/SearchBar";
 import { useLogSignIn } from "../../context/NavToggle"
 import './Navigation.css';
 import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';

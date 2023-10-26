@@ -7,7 +7,6 @@ class TourGuideForm(FlaskForm):
     price = FloatField('price', validators=[DataRequired()])
     about = StringField('about', validators=[DataRequired()])
     city = StringField('city', validators=[DataRequired()])
-    language = StringField('language', validators=[DataRequired()])
     monday = BooleanField('monday')
     tuesday = BooleanField('tuesday')
     wednesday = BooleanField('wednesday')
