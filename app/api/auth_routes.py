@@ -32,6 +32,11 @@ def authenticate():
         for rev in reviews_given:
             reviews_list.append(rev.to_dict())
         
+        bookings = user.tourist_tours
+        bookings_list_id = []
+        for booking in bookings:
+            bookings_list_id.append(booking.id)
+
         guide_ratings = []
         guide_reviews = []
         reviews = Review.query.filter_by(guide_id=current_user.id).all()
@@ -50,7 +55,7 @@ def authenticate():
         user_dict['rating'] = rating
         user_dict['reviews_of_guide'] = guide_reviews
         user_dict['reviews_given'] = reviews_list
-        user_dict['rating'] = rating
+        user_dict['booking_ids'] = bookings_list_id
     
         return user_dict
     return {'errors': ['Unauthorized']}

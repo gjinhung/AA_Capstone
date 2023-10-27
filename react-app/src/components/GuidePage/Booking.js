@@ -23,6 +23,7 @@ export default function PostBooking() {
     const [step2, setStep2] = useState(false)
     const [step3, setStep3] = useState(false)
     const [step4, setStep4] = useState(false)
+    const [price, setPrice] = useState(0)
     const current_user = useSelector((state) => state.session.user)
     const users = useSelector((state) => state.users)
     const tours = useSelector((state) => state.tours)
@@ -126,13 +127,14 @@ export default function PostBooking() {
         setStep3(true)
     };
 
-    const handleTour = (e) => {
+    const handleTour = (e, cost) => {
         if (e === tour_id) {
             setTour_id('')
             setStep4(false)
         } else {
             setTour_id(e)
             setStep4(true)
+            setPrice(cost)
         }
 
     };
@@ -192,7 +194,7 @@ export default function PostBooking() {
                                         defaultChecked={false}
                                         value={tour.id}
                                         key={idx}
-                                        onChange={(e) => handleTour(e.target.value)} />
+                                        onChange={(e) => handleTour(e.target.value, tour.price)} />
                                     <div>Type: {type[tour.specialties_id[0]].specialty}</div>
                                     <div>About: {tour.about}</div>
                                     <div>Price: {tour.price}/hr</div>
@@ -214,7 +216,7 @@ export default function PostBooking() {
                         />
                         <div>
                             <br />
-                            <label className="duration">How Long of a Tour?:</label>
+                            <label className="duration">Number of Hours?</label>
                             <select
                                 id="duration"
                                 name="duration"
@@ -228,6 +230,11 @@ export default function PostBooking() {
                                 <option value={5}>5</option>
                             </select>
                             <p>*5 hours max</p>
+                        </div>
+                        <div>
+                            {duration && (<>
+                                Total: {duration * price}
+                            </>)}
                         </div>
                     </>
                 }

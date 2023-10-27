@@ -105,17 +105,12 @@ def add_tour():
         errors['about'] = "Description of Tour Required"
     elif len(form.about.data) <= 20:
         errors['about'] = "Description needs at least 20 characters"
-    # if not language_data:
-    #     errors['language'] = "Language not found"
 
-    # if not form.language.data:
-    #     errors['language'] = 'Language Required'
-    
-    # if not city_data:
-    #     errors['city'] = 'City not found'
-
-    # if not form.city.data:
-    #     errors['city'] = 'City Required'
+    if form.history.data == False:
+        if form.food.data == False:
+            if form.adventure.data == False:
+               if form.other.data == False:
+                   errors['type'] = 'Type of Tour Required'
 
     if len(errors):
         return {"errors": errors}, 403
@@ -134,6 +129,8 @@ def add_tour():
 
         dates_list = []
         spec_list = []
+        dates_id = []
+        spec_id = []
         for data in form.data:
             specialty_list = ['Food', 'History', 'Adventure', 'Other']
             date_list = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -141,10 +138,12 @@ def add_tour():
                 if form.data[data] == True:
                     date_class = get_date(data)
                     dates_list.append(date_class)
+                    dates_id.append(date_class.id)
             if data.title() in specialty_list:
                 if form.data[data] == True:
                     spec_class = get_spec(data)
                     spec_list.append(spec_class)
+                    spec_id.append(spec_class.id)
                     
         tour = TourGuide(
             guide_id=current_user.id,
@@ -152,19 +151,23 @@ def add_tour():
             language_id=language_data.id,
             price=form.price.data,
             about=form.about.data,
-            dates=dates_list,
-            specialties=spec_list,
             created_at=datetime.datetime.utcnow(),
             updated_at=datetime.datetime.utcnow()
         )
         
+        for date in dates_list:  
+            tour.dates.append(date)
+
+        for spec in spec_list:
+            tour.specialties.append(spec)
+
         db.session.add(tour)
         db.session.commit()
         tour_dict = tour.to_dict()
 
         tour_dict['bookings_id'] = []
-        tour_dict['dates'] = []
-        tour_dict['specialties_id'] = []
+        tour_dict['dates'] = dates_id
+        tour_dict['specialties_id'] = spec_id
 
         return tour_dict
     else:
@@ -183,21 +186,41 @@ def edit_review(id):
 
     errors = {}
 
-    language = (form.language.data).title()
-    language_data = Language.query.filter_by(language=language).first()
-    
-    if not language_data:
-        errors['language'] = "Language not found"
+    if form.city.data:
+        city_name = (form.city.data).title()
+        city_data = City.query.filter_by(city=city_name).first()
 
-    city_name = (form.city.data).title()
-    city_data = City.query.filter_by(city=city_name).first()
-    
-    if not city_data:
-        errors['city'] = 'City not found'
+        if not city_data:
+            errors['city'] = 'City not found'
+    else:
+        errors['city'] = 'City Required'
 
+    if form.language.data:
+        language = (form.language.data).title()
+        language_data = Language.query.filter_by(language=language).first()
+
+        if not language_data:
+            errors['language'] = "Language not found"
+    else:
+        errors['language'] = 'Language Required'
+
+
+    if not form.price.data:
+        errors['price'] = 'Price Required'
+
+    if not form.about.data:
+        errors['about'] = "Description of Tour Required"
+    elif len(form.about.data) <= 20:
+        errors['about'] = "Description needs at least 20 characters"
     
     if current_user.id != tour.guide_id:
         return jsonify({"errors": "Unauthorized to edit this review"}), 403
+    
+    if form.history.data == False:
+        if form.food.data == False:
+            if form.adventure.data == False:
+               if form.other.data == False:
+                   errors['type'] = 'Type of Tour Required'
 
     if len(errors):
         return jsonify(errors), 403
@@ -218,7 +241,7 @@ def edit_review(id):
 
         if not city_data:
             return jsonify({"errors": "City not found"}), 404
-    
+        
         tour.city_id = city_data.id
 # find dates and specialties
         def get_date(date_name):
@@ -230,9 +253,12 @@ def edit_review(id):
             title_spec = specialty.title()
             spec = Specialty.query.filter_by(specialty=title_spec).first()
             return spec
-
+        tour.dates = []
+        tour.specialties = []
         dates_list = []
         spec_list = []
+        dates_id = []
+        spec_id = []
         for data in form.data:
             specialty_list = ['Food', 'History', 'Adventure', 'Other']
             date_list = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -240,21 +266,26 @@ def edit_review(id):
                 if form.data[data] == True:
                     date_class = get_date(data)
                     dates_list.append(date_class)
+                    dates_id.append(date_class.id)
             if data.title() in specialty_list:
                 if form.data[data] == True:
                     spec_class = get_spec(data)
                     spec_list.append(spec_class)
-
-        tour.dates = dates_list
-        tour.specialties = spec_list
+                    spec_id.append(spec_class.id)
+        
+        for date in dates_list:  
+            tour.dates.append(date)
+        
+        for spec in spec_list:
+            tour.specialties.append(spec)
 
         db.session.commit()
         
         tour_dict = tour.to_dict()
 
         tour_dict['bookings_id'] = []
-        tour_dict['dates'] = []
-        tour_dict['specialties_id'] = []
+        tour_dict['dates'] = dates_id
+        tour_dict['specialties_id'] = spec_id
 
         return tour_dict
     else:

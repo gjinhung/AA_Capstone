@@ -12,15 +12,17 @@ def get_all_bookings():
     bookings = Booking.query.all()
     bookings_data = []
     for booking in bookings:
+        booking_dict = booking.to_dict()
         # # to convert to string use strftime
         date_format = '%Y-%m-%d'
-        date = (booking.date).strftime(date_format)
+        if not isinstance(booking.date, str):
+            date = (booking.date).strftime(date_format)
+        else: date = booking.date
         # time_format = '%H:%M:%S'
         # start_time = (booking.start_time).strftime(time_format)
         # # to convert to datetime.date.fromisoformat(start_time)
         today = datetime.date.today()
         booking_date = datetime.date.fromisoformat(date)
-        booking_dict = booking.to_dict()
         diff = (booking_date-today).days
         occured = False
         if diff <= 0:
@@ -28,6 +30,9 @@ def get_all_bookings():
         booking_dict['completed'] = occured
         # booking_dict['start_time'] = start_time
         # booking_dict['date'] = date
+
+        booking_dict['tour'] = booking.tour_guide.to_dict()
+
         bookings_data.append(booking_dict)
     # return jsonify(bookings_data)
     return {"bookings": {booking['id']: booking for booking in bookings_data}}
@@ -39,16 +44,10 @@ def get_one_booking(id):
     if not booking:
         return jsonify({"errors": "Booking not found"}), 404
     
-    date_format = '%Y-%m-%d'
-    date = (booking.date).strftime(date_format)
-    today = datetime.date.today()
-    booking_date = datetime.date.fromisoformat(date)
     booking_dict = booking.to_dict()
-    diff = (booking_date-today).days
-    occured = False
-    if diff <= 0:
-        occured = True
-    booking_dict['completed'] = occured
+
+    booking_dict['tour'] = booking.tour_guide.to_dict()
+    
     return {"bookings": {booking_dict['id']: booking_dict}}
 
 @booking_routes.route('/tour/<int:tourId>/new', methods=['POST'])

@@ -96,6 +96,7 @@ class Booking(db.Model):
         string_date = raw_date.strftime(date_format)
         self.date = string_date
         self.start_time = string_time
+        
         return {
             'id': self.id,
             'tour_guide_id': self.tour_guide_id,

@@ -1,34 +1,40 @@
-import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { useModal } from "../../context/Modal";
-import { getTours, newTour } from "../../store/tour";
+import "./EditTourModal.css";
 import { allUsers } from "../../store/users";
+import { editReview, getReviews } from "../../store/reviews";
+import { editTour, getTours } from "../../store/tour";
 
-export default function PostTourModal() {
-    const dispatch = useDispatch();
-    const [language, setLanguage] = useState("");
-    const [monday, setMon] = useState(false)
-    const [tuesday, setTue] = useState(false)
-    const [wednesday, setWed] = useState(false)
-    const [thursday, setThur] = useState(false)
-    const [friday, setFri] = useState(false)
-    const [saturday, setSat] = useState(false)
-    const [sunday, setSun] = useState(false)
-    const [city, setCity] = useState(false)
-    const [history, setHistory] = useState(false)
-    const [food, setFood] = useState(false)
-    const [adventure, setAdventure] = useState(false)
-    const [other, setOther] = useState(false)
-    const [price, setPrice] = useState('')
-    const [about, setAbout] = useState('')
-    const [errors, setErrors] = useState({});
+function EditTourModal({ tour }) {
     const languages = useSelector((state) => state.languages)
     const normalizedLanguages = Object.values(languages)
     const cities = useSelector((state) => state.cities)
     const normalizedCities = Object.values(cities)
-    const types = useSelector((state) => state.specialties)
-    const normalizedTypes = Object.values(types)
+    const dispatch = useDispatch();
+    const [errors, setErrors] = useState({});
+    const [language, setLanguage] = useState(languages[tour.language_id].language);
+    const [monday, setMon] = useState((tour.dates).includes(0) ? true : false)
+    const [tuesday, setTue] = useState((tour.dates).includes(1) ? true : false)
+    const [wednesday, setWed] = useState((tour.dates).includes(2) ? true : false)
+    const [thursday, setThur] = useState((tour.dates).includes(3) ? true : false)
+    const [friday, setFri] = useState((tour.dates).includes(4) ? true : false)
+    const [saturday, setSat] = useState((tour.dates).includes(5) ? true : false)
+    const [sunday, setSun] = useState((tour.dates).includes(6) ? true : false)
+    const [city, setCity] = useState(cities[tour.city_id].city)
+    const [history, setHistory] = useState((tour.specialties_id).includes(4) ? true : false)
+    const [food, setFood] = useState((tour.specialties_id).includes(3) ? true : false)
+    const [adventure, setAdventure] = useState((tour.specialties_id).includes(2) ? true : false)
+    const [other, setOther] = useState((tour.specialties_id).includes(1) ? true : false)
+    const [price, setPrice] = useState(tour.price)
+    const [about, setAbout] = useState(tour.about)
+    const [formDisabled, setFormDisabled] = useState(true);
     const { closeModal } = useModal();
+
+    function handleChange(e) {
+        const result = e.target.value.replace(/\D/g, '');
+        setPrice(result);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -49,9 +55,9 @@ export default function PostTourModal() {
             'adventure': adventure,
             'other': other
         }
-        const data = await dispatch(newTour(tour_data));
+        const data = await dispatch(editTour(tour.id, tour_data));
         if (data) {
-            setErrors(data.errors);
+            setErrors(data)
         } else {
             dispatch(allUsers())
             dispatch(getTours())
@@ -59,14 +65,9 @@ export default function PostTourModal() {
         }
     };
 
-    function handleChange(e) {
-        const result = e.target.value.replace(/\D/g, '');
-        setPrice(result);
-    };
-
     return (
         <>
-            <h1>Create a Tour</h1>
+            <h1>Edit your Tour</h1>
             <form onSubmit={handleSubmit}>
                 <label className="language"></label>
                 Language
@@ -144,7 +145,7 @@ export default function PostTourModal() {
                             checked={food}
                             onChange={() => {
                                 setHistory(false)
-                                setFood(!food)
+                                setFood(!false)
                                 setAdventure(false)
                                 setOther(false)
                             }} /> Food
@@ -240,10 +241,11 @@ export default function PostTourModal() {
                 </div>
 
 
-                <button type="submit">Post Tour</button>
+                <button type="submit">Edit Tour</button>
                 <button onClick={() => closeModal()}>Cancel</button>
             </form >
         </>
     );
 }
 
+export default EditTourModal;

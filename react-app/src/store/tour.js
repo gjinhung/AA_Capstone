@@ -70,15 +70,13 @@ export const editTour = (id, tour) => async (dispatch) => {
         },
         body: JSON.stringify(tour),
     });
-
     if (response.ok) {
         const data = await response.json();
         dispatch(postTour(data));
-        return data
     } else if (response.status < 500) {
         const data = await response.json();
-        if (data.errors) {
-            return data.errors;
+        if (data) {
+            return data;
         }
     } else {
         return ["An error occured while updating tour. Please try again."];
@@ -89,11 +87,9 @@ export const deleteTour = (id) => async (dispatch) => {
     const response = await fetch(`/api/tours/${id}`, {
         method: 'DELETE',
     });
-
     if (response.ok) {
-        const data = await response.json();
+        console.log('ok')
         dispatch(removeTour(id));
-        return data;
     } else if (response.status < 500) {
         const data = await response.json();
         if (data.errors) {
