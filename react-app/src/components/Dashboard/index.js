@@ -3,13 +3,11 @@ import OpenModalButton from "../OpenModalButton";
 import PostTourModal from "../PostTourModal";
 import MyBookings from "../MyBookings";
 import MyTours from "../MyTours";
-import { useDispatch } from "react-redux";
-import { getBookings } from "../../store/booking";
-import { getTours } from "../../store/tour";
+import { useSelector } from "react-redux";
 
 export default function Dashboard({ loaded }) {
     const ulRef = useRef();
-    const dispatch = useDispatch()
+    const current_user = useSelector((state) => state.session.user)
     const [showMenu, setShowMenu] = useState(false);
 
     const closeMenu = (e) => {
@@ -26,14 +24,16 @@ export default function Dashboard({ loaded }) {
     } else {
         return (
             <>
-                <div className="view-post-container">
-                    <OpenModalButton
-                        buttonText="Post a New Tour"
-                        onItemClick={closeMenu}
-                        modalComponent={<PostTourModal />}
-                        id={'post-tour-button'}
-                    />
-                </div>
+                {current_user.student &&
+                    <div className="view-post-container">
+                        <OpenModalButton
+                            buttonText="Post a New Tour"
+                            onItemClick={closeMenu}
+                            modalComponent={<PostTourModal />}
+                            className={'tours-buttons'}
+                        />
+                    </div>}
+                <br />
                 <MyTours loaded={loaded} />
                 < br />
                 <MyBookings loaded={loaded} />

@@ -22,7 +22,7 @@ def seed_users():
     demo2 = User(
         id=2,
         username='Demo2', 
-        email='demo2e@aa.io', 
+        email='demo2@aa.io', 
         password='password',
         first_name='Demo',
         last_name="Lition",

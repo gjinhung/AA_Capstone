@@ -13,11 +13,7 @@ import { useHistory } from "react-router-dom";
 export default function MyTours({ loaded }) {
     let hist = useHistory()
     const current_user = useSelector((state) => state.session.user)
-    if (!current_user) {
-        console.log('if statement fired')
-        hist.push('/slider')
 
-    }
     const user_tours_arr = useSelector((state) => state.users[current_user.id].tours_given_ids)
     const tours = useSelector((state) => state.tours)
     const cities = useSelector((state) => state.cities)
@@ -42,49 +38,62 @@ export default function MyTours({ loaded }) {
                 Loading...
             </>
         )
-    } else {
+    } if (current_user.student) {
         return (
             <>
                 {user_tours_arr.map((tour_id, idx) => {
                     return (
-                        <div key={idx}>
-                            <img
-                                src={typeImg(type[tours[tour_id].specialties_id[0]])}
-                                className='tourIcon'
-                                alt={tour_id}
-                                key={idx} />
-                            <div>
-                                {type[tours[tour_id].specialties_id[0]].specialty}
+                        <div className="scroll-container" key={idx}>
+                            <div className="image" >
+                                <img
+                                    src={typeImg(type[tours[tour_id].specialties_id[0]])}
+                                    className='guide_img'
+                                    alt={tour_id}
+                                    key={idx} />
+                                <div className="content">
+                                    <div>
+                                        {type[tours[tour_id].specialties_id[0]].specialty}
+                                    </div>
+                                    <div>
+                                        {cities[tours[tour_id].city_id].city}
+                                    </div>
+                                    <div>
+                                        ${tours[tour_id].price}/hr
+                                    </div>
+                                    <div>
+                                        Language: {languages[tours[tour_id].language_id].language}
+                                    </div>
+                                    <br />
+                                    <div className="button-container">
+                                        <button
+                                            className="tours-buttons"
+                                            onClick={() => hist.push(`/guide/${tours[tour_id].guide_id}`)}>
+                                            View
+                                        </button>
+                                        <OpenModalButton
+                                            buttonText="Edit"
+                                            modalComponent={
+                                                <EditTourModal tour={tours[tour_id]} />
+                                            }
+                                            className='tours-buttons'
+                                        />
+                                        <OpenModalButton
+                                            buttonText="Delete"
+                                            modalComponent={
+                                                <DeleteTourModal tour_id={tour_id} />
+                                            }
+                                            className='tours-buttons'
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                {cities[tours[tour_id].city_id].city}
-                            </div>
-                            <div>
-                                ${tours[tour_id].price}/hr
-                            </div>
-                            <div>
-                                Language: {languages[tours[tour_id].language_id].language}
-                            </div>
-                            <br />
-                            <OpenModalButton
-                                buttonText="Edit"
-                                modalComponent={
-                                    <EditTourModal tour={tours[tour_id]} />
-                                }
-                                id={'tour-edit-button'}
-                            />
-                            <OpenModalButton
-                                buttonText="Delete"
-                                modalComponent={
-                                    <DeleteTourModal tour_id={tour_id} />
-                                }
-                                id={'tour-delete-button'}
-                            />
-                        </div>
-
+                        </div >
                     )
-                })}
+                })
+                }
             </>
         )
+    } else {
+        return null
     }
 }
