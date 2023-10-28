@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../store/session";
 import { useLogSignIn } from "../../context/NavToggle"
 import { NavLink } from 'react-router-dom';
+import { useHistory } from "react-router-dom/";
+import './Navigation.css'
 
 
 function ProfileButton({ user }) {
@@ -10,6 +12,7 @@ function ProfileButton({ user }) {
   const [showMenu, setShowMenu] = useState(false);
   const { logSignIn, setLogSignIn } = useLogSignIn()
   const ulRef = useRef();
+  const navigate = useHistory();
 
   const openMenu = () => {
     if (showMenu) return;
@@ -27,6 +30,7 @@ function ProfileButton({ user }) {
     if (!showMenu) return;
 
     const closeMenu = (e) => {
+      // console.log(ulRef)
       if (!ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
@@ -42,6 +46,7 @@ function ProfileButton({ user }) {
     setLogSignIn(false)
     setShowMenu(false)
     dispatch(logout());
+    navigate.push("/");
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -49,9 +54,13 @@ function ProfileButton({ user }) {
   let show
   if (!user) {
     show = (
-      <button onClick={openLoginSignUp}>
-        <>Log In / Sign Up</>
-      </button>
+      <>
+        <ul className={ulClassName} ref={ulRef}></ul>
+        <button
+          onClick={openLoginSignUp}>
+          <>Log In / Sign Up</>
+        </button>
+      </>
     )
   } else {
     show = (
@@ -64,8 +73,7 @@ function ProfileButton({ user }) {
             <li>{user.first_name} {user.last_name}</li>
             <li>{user.email}</li>
             <li className="view-logout-container">
-              <NavLink exact to="/manage" className="view-business-button">View Bookings</NavLink>
-              {/* <NavLink exact to="/business/create-new-business" className="create-business-button">Create a business</NavLink> */}
+              <NavLink exact to="/dashboard" className="view-business-button">View Bookings</NavLink>
               <button onClick={handleLogout} className="logout-red-button">Log Out</button>
             </li>
           </>

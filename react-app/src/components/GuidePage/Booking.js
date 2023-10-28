@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getBookings, newBooking } from "../../store/booking";
 import { allUsers } from "../../store/users";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
+import SuccessfullBooking from "./SuccessModal";
 
 export default function PostBooking() {
 
@@ -30,8 +31,10 @@ export default function PostBooking() {
     const cities = useSelector((state) => state.cities)
     const type = useSelector((state) => state.specialties)
     const guide = users[+id]
+    const [success, setSuccess] = useState(false)
 
     useEffect(() => {
+        setSuccess(false)
         if (!startTime) {
             setSubmit(true)
         } else if (+duration === 0) {
@@ -81,7 +84,7 @@ export default function PostBooking() {
             } else {
                 dispatch(getBookings())
                 dispatch(allUsers())
-                history.push('/manage')
+                setSuccess(true)
             }
         })
     }
@@ -95,6 +98,7 @@ export default function PostBooking() {
         let newDate = new Date(`${year}/${month}/${+day}`);
         let currentDate = new Date()
         dayNumRef.current = newDate.getDay()
+
         if ((newDate - currentDate) < 0) {
             // setDate('')
             setError("Selected Date is Invalid")
@@ -146,6 +150,8 @@ export default function PostBooking() {
     } else if (+id === current_user.id) {
         show = (<>
         </>)
+    } else if (success) {
+        show = <SuccessfullBooking />
     } else {
         show = (
             < form onSubmit={handleSubmit} >
@@ -233,7 +239,7 @@ export default function PostBooking() {
                         </div>
                         <div>
                             {duration && (<>
-                                Total: {duration * price}
+                                Total: ${duration * price}
                             </>)}
                         </div>
                     </>

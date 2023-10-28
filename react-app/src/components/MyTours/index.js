@@ -18,8 +18,7 @@ export default function MyTours({ loaded }) {
         hist.push('/slider')
 
     }
-    let current_user_id = current_user.id
-    const user_tours_arr = useSelector((state) => state.users[current_user_id].tours_given_ids)
+    const user_tours_arr = useSelector((state) => state.users[current_user.id].tours_given_ids)
     const tours = useSelector((state) => state.tours)
     const cities = useSelector((state) => state.cities)
     const type = useSelector((state) => state.specialties)

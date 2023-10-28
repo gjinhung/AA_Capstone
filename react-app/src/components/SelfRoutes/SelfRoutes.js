@@ -13,7 +13,7 @@
 // // import { getReviews } from "../../store/reviews";
 // import { useDispatch } from "react-redux";
 // import { Switch } from "react-router-dom/";
-// import ManagementPage from "../ManagePage";
+// import Dashboard from "../Dashboard";
 
 // export default function SelfRoutes() {
 //     const dispatch = useDispatch()
@@ -45,8 +45,8 @@
 //                     <Route path='/guide/:id'>
 //                         <GuidePage loaded={loaded} />
 //                     </Route>
-//                     <Route path='/manage'>
-//                         <ManagementPage loaded={loaded} />
+//                     <Route path='/dashboard'>
+//                         <Dashboard loaded={loaded} />
 //                     </Route>
 //                     <Route path=''>
 //                         <MainPage loaded={loaded} />

@@ -1,7 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import EditBookingModal from "../EditBookingModal";
+import DeleteBookingModal from "../DeleteBookingModal";
+import OpenModalButton from "../OpenModalButton";
 
 export default function MyBookings() {
     const bookings = useSelector((state) => state.bookings)
@@ -27,6 +29,20 @@ export default function MyBookings() {
                         </div>
 
                         <br />
+                        <OpenModalButton
+                            buttonText="Update"
+                            modalComponent={
+                                <EditBookingModal booking={bookings[booking_id]} />
+                            }
+                            id={'booking-edit-button'}
+                        />
+                        <OpenModalButton
+                            buttonText="Cancel Tour"
+                            modalComponent={
+                                <DeleteBookingModal booking_id={booking_id} />
+                            }
+                            id={'booking-delete-button'}
+                        />
                     </div>
                 )
             })}

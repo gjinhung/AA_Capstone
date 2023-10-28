@@ -5,7 +5,7 @@ export default function SuccessfullBooking() {
     return (
         <>
             Booking Complete
-            <NavLink exact to="/personalpage" className="personalpage-button">
+            <NavLink exact to="/dashboard" className="personalpage-button">
                 See All Bookings
             </NavLink>
         </>

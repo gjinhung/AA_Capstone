@@ -72,7 +72,11 @@ def add_booking(tourId):
 
         db.session.add(booking)
         db.session.commit()
-        return booking.to_dict()
+
+        booking_dict = booking.to_dict()
+        booking_dict['tour'] = booking.tour_guide.to_dict()
+
+        return booking_dict
     else:
         return {"errors": validation_errors_to_error_messages(form.errors)}
 
@@ -94,7 +98,10 @@ def edit_booking(id):
         booking.updated_at = datetime.datetime.utcnow()
         db.session.commit()
 
-        return booking.to_dict()
+        booking_dict = booking.to_dict()
+        booking_dict['tour'] = booking.tour_guide.to_dict()
+
+        return booking_dict
     else:
         return {"errors": validation_errors_to_error_messages(form.errors)}
     

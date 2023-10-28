@@ -1,12 +1,12 @@
-import './DeleteTourModal.css'
+import './DeleteBookingModal.css'
 import { useDispatch } from "react-redux";
 import { useState } from 'react';
 import { useModal } from "../../context/Modal";
 import { allUsers } from '../../store/users';
-import { deleteTour, getTours } from '../../store/tour';
+import { deleteBooking, getBookings } from '../../store/booking';
 
 
-function DeleteTourModal({ tour_id }) {
+function DeleteBookingModal({ booking_id }) {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const dispatch = useDispatch();
@@ -14,12 +14,11 @@ function DeleteTourModal({ tour_id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    console.log(+tour_id)
-    const data = await dispatch(deleteTour(+tour_id))
+    const data = await dispatch(deleteBooking(+booking_id))
     if (data) {
       setErrors(data)
     } else {
-      dispatch(getTours()).then(() =>
+      dispatch(getBookings()).then(() =>
         dispatch(allUsers())).then(() =>
           closeModal())
     }
@@ -27,15 +26,15 @@ function DeleteTourModal({ tour_id }) {
 
 
   return (
-    <div className="deleteSpotContainer">
-      <div className="deleteHeader">Confirm Delete</div>
-      <div className="deleteText">Are you sure you want to delete this tour?</div>
+    <div className="deleteBookingContainer">
+      <div className="deleteHeader">Confirm Cancel</div>
+      <div className="deleteText">Are you sure you want to cancel this tour?</div>
       <div>
         <button
           onClick={handleSubmit}
           className='confirm-yes'
         >
-          Yes (Delete Tour)
+          Yes (Cancel Tour)
         </button>
         <button
           onClick={((e) => {
@@ -50,4 +49,4 @@ function DeleteTourModal({ tour_id }) {
   )
 }
 
-export default DeleteTourModal;
+export default DeleteBookingModal;

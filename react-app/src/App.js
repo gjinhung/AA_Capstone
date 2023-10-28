@@ -6,7 +6,6 @@ import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import { getTours } from "./store/tour";
-// import SelfRoutes from "./components/SelfRoutes/SelfRoutes";
 import { getBookings } from "./store/booking";
 import { getDates } from "./store/date";
 import { getCities } from "./store/city";
@@ -17,7 +16,8 @@ import { getReviews } from "./store/reviews";
 import MainPage from "./components/MainPage";
 import LogInSignUp from "./components/LogInSignUp";
 import GuidePage from "./components/GuidePage";
-import ManagementPage from "./components/ManagePage";
+import Dashboard from "./components/Dashboard";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,9 +55,9 @@ function App() {
             <Route path='/guide/:id'>
               <GuidePage loaded={isLoaded} />
             </Route>
-            <Route path='/manage'>
-              <ManagementPage loaded={isLoaded} />
-            </Route>
+            <ProtectedRoute path='/dashboard' exact={true}>
+              < Dashboard loaded={isLoaded} />
+            </ProtectedRoute>
             <Route path=''>
               <MainPage loaded={isLoaded} />
             </Route>

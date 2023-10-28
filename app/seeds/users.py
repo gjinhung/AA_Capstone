@@ -6,6 +6,7 @@ import datetime
 def seed_users():
 
     demo = User(
+        id = 1,
         username='Demo', 
         email='demo@aa.io', 
         password='password', 
@@ -19,6 +20,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     demo2 = User(
+        id=2,
         username='Demo2', 
         email='demo2e@aa.io', 
         password='password',
@@ -32,6 +34,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
 
     demo3 = User(
+        id=3,
         username='Demo3', 
         email='demo3@aa.io', 
         password='password',
@@ -45,21 +48,25 @@ def seed_users():
         updated_at=datetime.datetime.now())
 
     new_york = City(
+        id = 1,
         city="New York",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     los_angeles = City(
+        id = 2,
         city="Los Angeles",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     seattle = City(
+        id = 3,
         city="Seattle",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
 
     booking1 = Booking(
+        id = 1,
         tour_guide_id=1, 
         date=datetime.date(2024, 1, 1),
         start_time=datetime.time(9),
@@ -69,6 +76,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     booking2 = Booking(
+        id = 2,
         tourist_id=3, 
         date=datetime.date(2024, 2, 1),
         start_time=datetime.time(9),
@@ -78,6 +86,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     booking3 = Booking(
+        id = 3,
         tourist_id=1, 
         tour_guide_id=2, 
         date=datetime.date(2024, 1, 15),
@@ -87,83 +96,91 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     food = Specialty(
+        id = 1,
         specialty="Food",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
 
     history = Specialty(
+        id = 2,
         specialty="History",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     adventure = Specialty(
+        id = 3,
         specialty="Adventure",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
 
     other = Specialty(
+        id = 4,
         specialty="Other",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
         
     monday = Date(
-        id=0,
+        id=1,
         date="Monday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     tuesday = Date(
-        id=1,
+        id=2,
         date="Tuesday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     wednesday = Date(
-        id=2,
+        id=3,
         date="Wednesday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     thursday = Date(
-        id=3,
+        id=4,
         date="Thursday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     friday = Date(
-        id=4,
+        id=5,
         date="Friday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     saturday = Date(
-        id=5,
+        id=6,
         date="Saturday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     sunday = Date(
-        id=6,
+        id=0,
         date="Sunday",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now()) 
     
     english = Language(
+        id=1,
         language="English",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     spanish = Language(
+        id=2,
         language="Spanish",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
     
     chinese = Language(
+        id=3,
         language="Chinese",
         created_at=datetime.datetime.now(),
         updated_at=datetime.datetime.now())
 
     tour1 = TourGuide(
+        id=1,
         guide_id=1, 
         city_id=1,
         language=english,
@@ -175,6 +192,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     tour2 = TourGuide(
+        id=2,
         guide=demo2,
         city_id=2,
         language=spanish,
@@ -186,6 +204,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     tour3 = TourGuide(
+        id=3,
         guide_id=2, 
         city_id=3,
         language=chinese,
@@ -199,6 +218,7 @@ def seed_users():
     tour3.dates.append(monday)
 
     review1 = Review(
+        id=1,
         reviewer_id=3,
         guide_id=1,
         # communication_rating=5,
@@ -211,6 +231,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     review2 = Review(
+        id=2,
         reviewer_id=3,
         guide_id=2,
         # communication_rating=5,
@@ -223,6 +244,7 @@ def seed_users():
         updated_at=datetime.datetime.now())
     
     review3 = Review(
+        id=3,
         reviewer_id=1, 
         guide_id=2,
         # communication_rating=5,

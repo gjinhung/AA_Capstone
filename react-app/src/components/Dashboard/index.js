@@ -1,11 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import OpenModalButton from "../OpenModalButton";
 import PostTourModal from "../PostTourModal";
 import MyBookings from "../MyBookings";
 import MyTours from "../MyTours";
+import { useDispatch } from "react-redux";
+import { getBookings } from "../../store/booking";
+import { getTours } from "../../store/tour";
 
-export default function ManagementPage({ loaded }) {
+export default function Dashboard({ loaded }) {
     const ulRef = useRef();
+    const dispatch = useDispatch()
     const [showMenu, setShowMenu] = useState(false);
 
     const closeMenu = (e) => {
