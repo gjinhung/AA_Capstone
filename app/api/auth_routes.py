@@ -126,11 +126,13 @@ def sign_up():
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     data = form.data
-    if data['student'] == 'true':
+    
+    trufy = ['true', "true", 'True', "True"]
+
+    if data['student'] in trufy:
         data['student'] = True
     else:
         data['student'] = False
-
 
     if form.validate_on_submit():
 

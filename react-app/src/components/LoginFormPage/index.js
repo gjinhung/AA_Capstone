@@ -21,6 +21,12 @@ function LoginFormPage() {
     }
   };
 
+  function handleDemo(e) {
+    setEmail('demo@aa.io')
+    setPassword('password')
+    handleSubmit(e)
+  }
+
   return (
     // <div className="loginpage">
     <form onSubmit={handleSubmit}
@@ -28,7 +34,7 @@ function LoginFormPage() {
       <div className="form-group">
         <h3 className="step-title">Log In</h3>
         <label>
-          <a style={{ color: "red" }}>{errors["email"]}</a>
+          <div style={{ color: "red" }}>{errors["email"]}</div>
         </label>
         <input
           type="text"
@@ -40,7 +46,7 @@ function LoginFormPage() {
       </div>
       <label className="form-group">
         <label>
-          <a style={{ color: "red" }}>{errors["password"]}</a>
+          <div style={{ color: "red" }}>{errors["password"]}</div>
         </label>
         <input
           type="password"
@@ -52,6 +58,12 @@ function LoginFormPage() {
         />
       </label>
       <button type="submit">Log In</button>
+
+      <h5
+        className="demoUser"
+        onClick={handleDemo}>
+        Click Here for Demo User
+      </h5>
     </form>
     // </div>
   );

@@ -5,6 +5,7 @@ import { signUp } from "../../store/session";
 import './SignupForm.css';
 
 function SignupFormPage() {
+  // const today = new Date()
   const dispatch = useDispatch();
   const multiStepRef = useRef()
   const sessionUser = useSelector((state) => state.session.user);
@@ -18,14 +19,17 @@ function SignupFormPage() {
   const [card1, setCard1] = useState('active')
   const [card2, setCard2] = useState('')
   const [card3, setCard3] = useState('')
-  const [student, setStudent] = useState(false)
-  const [graduation_date, setGraduation] = useState()
+  const [isStudent, setIsStudent] = useState(false)
+  const [graduation_date, setGraduation] = useState('')
   const [errors, setErrors] = useState({});
+  const stuRef = useRef(isStudent)
+  const [allowSub, setAllowSub] = useState(true)
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let student = `${stuRef.current}`
     if (password === confirmPassword) {
       const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
       if (data) {
@@ -39,10 +43,24 @@ function SignupFormPage() {
     }
   };
 
+  function handleStudent(e) {
+    setIsStudent(!isStudent)
+    stuRef.current = !isStudent
+    if (!isStudent) {
+      setGraduation('')
+    }
+    if (isStudent && !graduation_date) {
+      setAllowSub(true)
+    } else if (isStudent && graduation_date) {
+      setAllowSub(false)
+    }
+  }
+
   const firstNext = async (e) => {
     if (password !== confirmPassword) {
       setErrors({ "confirmPassword": 'Confirm Password field must be the same as the Password field' })
     } else {
+      let student = stuRef.current
       const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
 
       if (data["username"] || data['email'] || data['password']) {
@@ -61,6 +79,7 @@ function SignupFormPage() {
   }
 
   const secondNext = async () => {
+    let student = stuRef.current
     const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
     if (data["first_name"] || data['last_name'] || data['profile_pic']) {
       const errorList = {
@@ -155,17 +174,21 @@ function SignupFormPage() {
         <h3 className="step-title">Are you a student?</h3>
         <div className="form-group">
           <label>student</label>
-          <input type='checkbox' value={student} onChange={(e) => setStudent(e.target.value)}></input>
+          <input type='checkbox' value={isStudent} onChange={(e) => handleStudent(e.target.value)}></input>
         </div>
         <div className="form-group">
-          <label>graduation</label>
-          <input type='date' value={graduation_date} onChange={(e) => setGraduation(e.target.value)}></input>
+          {isStudent &&
+            <>
+              <label>graduation</label>
+              <input type='date' value={graduation_date} onChange={(e) => setGraduation(e.target.value)}></input>
+            </>
+          }
         </div>
         <button
           type="button"
           onClick={thirdPrev}
         >Previous</button>
-        <button type="submit">Sign Up</button>
+        <button disabled={allowSub} type="submit">Sign Up</button>
       </div>
     </form >
     // </div>

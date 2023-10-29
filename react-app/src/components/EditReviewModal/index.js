@@ -68,34 +68,51 @@ function EditReviewModal({ guide_id, review }) {
         closeModal();
     };
 
-    if (!user) return <div>Loading...</div>;
-    return (
-        <div id="editReviewContainer">
-            <div className="editReviewHeading">Edit Your Review</div>
-            <label>
-                <input
-                    type="text"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    className="comment-input"
-                    placeholder="Edit your review here..."
-                />
-            </label>
-            {errors.comment && <div>{errors.comment}</div>}
-            <div className="rating-input">
-                <StarsRating disabled={false} stars={stars} onChange={onChange} />
-                <div>Stars</div>
-                {errors.rating && <div>{errors.rating}</div>}
+    if (!user) return (
+        <div className="loading-style">
+            <div className='loading-font'>
+                Loading...
             </div>
-            <button
-                onClick={handleSubmit}
-                className={formDisabled ? "submit-button-inactive" : "submit-button"}
-                type="submit"
-                disabled={formDisabled}
-            >
-                Save Changes
-            </button>
         </div>
+    );
+    return (
+        <>
+            <div className="title-tour-container">
+                <h3 className="title-tour">Edit Your Review</h3>
+            </div>
+            <form className="editBooking-container">
+                <div className="empty-space"> </div>
+                <div className="rating-input type">Edit Your Comment Below</div>
+                <div className="empty-space"> </div>
+                <label>
+                    <input
+                        type="text"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        className="comment-input"
+                        placeholder="Edit your review here..."
+                    />
+                </label>
+                {errors.comment && errors.comment ? <div style={{ color: "red" }}>{errors.comment}</div> : <div className="empty-space"> </div>}
+
+                <div className="rating-input type">
+                    <StarsRating disabled={false} stars={stars} onChange={onChange} />
+                    <div>Stars</div>
+                    {errors.rating && errors.rating ? <div style={{ color: "red" }}>{errors.rating}</div> : <div className="empty-space"> </div>}
+                </div>
+                <br />
+                <div className="save-changes">
+                    <button
+                        onClick={handleSubmit}
+                        className={'tours-buttons'}
+                        type="submit"
+                        disabled={formDisabled}
+                    >
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </>
     );
 }
 

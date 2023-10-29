@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getBookings, newBooking } from "../../store/booking";
 import { allUsers } from "../../store/users";
-import { useHistory, Redirect } from "react-router-dom";
-import SuccessfullBooking from "./SuccessModal";
+import { useHistory } from "react-router-dom";
+import { authenticate } from "../../store/session";
 
 export default function PostBooking() {
 
@@ -14,7 +14,7 @@ export default function PostBooking() {
     let dateRef = useRef('')
     let dayNumRef = useRef()
     const { id } = useParams()
-    const [date, setDate] = useState('');
+    // const [date, setDate] = useState('');
     const [city, setCity] = useState('')
     const [tour_id, setTour_id] = useState('')
     const [error, setError] = useState('')
@@ -31,10 +31,8 @@ export default function PostBooking() {
     const cities = useSelector((state) => state.cities)
     const type = useSelector((state) => state.specialties)
     const guide = users[+id]
-    const [success, setSuccess] = useState(false)
 
     useEffect(() => {
-        setSuccess(false)
         if (!startTime) {
             setSubmit(true)
         } else if (+duration === 0) {
@@ -45,7 +43,7 @@ export default function PostBooking() {
 
     }, [startTime, duration])
 
-    const weekday = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    // const weekday = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     let available_days = new Set()
     let toursCityWithSelectedDate = []
@@ -84,7 +82,8 @@ export default function PostBooking() {
             } else {
                 dispatch(getBookings())
                 dispatch(allUsers())
-                setSuccess(true)
+                dispatch(authenticate())
+                history.push('/dashboard')
             }
         })
     }
@@ -150,8 +149,6 @@ export default function PostBooking() {
     } else if (+id === current_user.id) {
         show = (<>
         </>)
-    } else if (success) {
-        show = <SuccessfullBooking />
     } else {
         show = (
             < form onSubmit={handleSubmit} >

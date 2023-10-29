@@ -16,11 +16,6 @@
     text-align: center;
   }
   
-  .comment-input {
-    background-color: #f5acac;
-    width: 100%;
-    padding: 5px 0px;
-  }
   
   .rating-input {
     display: flex;
@@ -54,4 +49,20 @@
   
   .submit-button-inactive:hover {
     background-color: gray;
+  }
+
+
+  .row {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: row;
+    flex-basis: 100%;
+    flex: 1;
   }

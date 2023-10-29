@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import adventure from '../../images/adventure.png'
 import history from '../../images/history.png'
@@ -21,11 +21,11 @@ export default function MyTours({ loaded }) {
     const languages = useSelector((state) => state.languages)
 
     function typeImg(img) {
-        if (img === 2) {
+        if (img.id === 3) {
             return adventure
-        } else if (img === 3) {
+        } else if (img.id === 1) {
             return food
-        } else if (img === 4) {
+        } else if (img.id === 2) {
             return history
         } else {
             return other
@@ -34,9 +34,11 @@ export default function MyTours({ loaded }) {
 
     if (!loaded) {
         return (
-            <>
-                Loading...
-            </>
+            <div className="loading-style">
+                <div className='loading-font'>
+                    Loading...
+                </div>
+            </div>
         )
     } if (current_user.student) {
         return (
@@ -44,7 +46,7 @@ export default function MyTours({ loaded }) {
                 {user_tours_arr.map((tour_id, idx) => {
                     return (
                         <div className="scroll-container" key={idx}>
-                            <div className="image" >
+                            <div className="image toursicon" >
                                 <img
                                     src={typeImg(type[tours[tour_id].specialties_id[0]])}
                                     className='guide_img'

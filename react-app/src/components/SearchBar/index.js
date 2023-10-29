@@ -83,7 +83,13 @@ export default function SearchBar({ loaded }) {
     }
     // console.log(loaded)
     if (!loaded) {
-        return <h2>Loading</h2>
+        return (
+            <div className="loading-style">
+                <div className='loading-font'>
+                    Loading...
+                </div>
+            </div>
+        )
     } else {
         // console.log(users)
         return (
