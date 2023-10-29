@@ -87,6 +87,7 @@
   width: fit-content
 }
 
+
 .tours-buttons:hover {
   background-color: #1e293b;
   color: #fff;
@@ -99,3 +100,26 @@
   }
 }
 
+.toursicon{
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.linkbuttons{
+    margin-right: 10px;
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.edit-review-container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}

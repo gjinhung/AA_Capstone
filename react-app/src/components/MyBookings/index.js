@@ -32,17 +32,18 @@ export default function MyBookings() {
 
         const date = new Date(data);
         const day = days[date.getDay()];
+        const num = date.getDate()
         const month = months[date.getMonth()];
         const year = date.getFullYear();
 
-        return `${day}, ${month} ${year}`;
+        return `${day}, ${month} ${num}, ${year}`;
 
     }
 
     function convertTime(time) {
         const hours = time.substring(0, 2);
         const minutes = time.substring(3, 5)
-        const milliseconds = time.substring(6, 8)
+        // const milliseconds = time.substring(6, 8)
 
         const twelveHours = hours % 12;
 

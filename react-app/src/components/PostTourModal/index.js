@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { getTours, newTour } from "../../store/tour";
 import { allUsers } from "../../store/users";
+import './PostTourModal.css'
 
 export default function PostTourModal() {
     const dispatch = useDispatch();
@@ -26,8 +27,8 @@ export default function PostTourModal() {
     const normalizedLanguages = Object.values(languages)
     const cities = useSelector((state) => state.cities)
     const normalizedCities = Object.values(cities)
-    const types = useSelector((state) => state.specialties)
-    const normalizedTypes = Object.values(types)
+    // const types = useSelector((state) => state.specialties)
+    // const normalizedTypes = Object.values(types)
     const { closeModal } = useModal();
 
     const handleSubmit = async (e) => {
@@ -65,11 +66,12 @@ export default function PostTourModal() {
     };
 
     return (
-        <>
-            <h1>Create a Tour</h1>
-            <form onSubmit={handleSubmit}>
-                <label className="language"></label>
-                Language
+        <div >
+            <div className="title-tour-container">
+                <h1 className="title-tour">Create a Tour</h1>
+            </div>
+            <form className="createTour-container" onSubmit={handleSubmit}>
+                <label className="language">Select a Language</label>
                 <select
                     id='language'
                     name='language'
@@ -82,16 +84,18 @@ export default function PostTourModal() {
                         )
                     })}
                 </select>
-                {errors && errors['language'] ? <div style={{ color: "red" }}>{errors['language']}</div> : <br />}
-                <label>Price</label>
+                {errors && errors['language'] ? <div style={{ color: "red" }}>{errors['language']}</div> : <div className="empty-space"> </div>}
+
+                <label className="price">Input Your Price</label>
                 <input
                     type="text"
                     placeholder="Price per Hour"
                     value={price}
                     onChange={(e) => handleChange(e)}
                 />
-                {errors && errors['price'] ? <div style={{ color: "red" }}>{errors['price']}</div> : <br />}
-                <label>Description of the Tour</label>
+                {errors && errors['price'] ? <div style={{ color: "red" }}>{errors['price']}</div> : <div className="empty-space"> </div>}
+
+                <label className="description">Description of the Tour</label>
                 <div className='text-container'>
                     <textarea
                         style={{ resize: "none" }}
@@ -104,9 +108,9 @@ export default function PostTourModal() {
                     >
                     </textarea>
                 </div>
-                {errors && errors['about'] ? <div style={{ color: "red" }}>{errors['about']}</div> : <br />}
-                <label className="city"></label>
-                City
+                {errors && errors['about'] ? <div style={{ color: "red" }}>{errors['about']}</div> : <div className="empty-space"> </div>}
+
+                <label className="city">Select Your City</label>
                 <select
                     id='city'
                     name='city'
@@ -119,65 +123,69 @@ export default function PostTourModal() {
                         )
                     })}
                 </select>
-                {errors && errors['city'] ? <div style={{ color: "red" }}>{errors['city']}</div> : <br />}
+                {errors && errors['city'] ? <div style={{ color: "red" }}>{errors['city']}</div> : <div className="empty-space"> </div>}
                 <div className="type-selection">
-                    <label className="dates">Choose Type of Tour You Want to Host:</label>
-                    {errors && errors['type'] ? <div style={{ color: "red" }}>{errors['type']}</div> : <br />}
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`history`}
-                            checked={history}
-                            onChange={() => {
-                                setHistory(!history)
-                                setFood(false)
-                                setAdventure(false)
-                                setOther(false)
-                            }} /> History
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`food`}
-                            checked={food}
-                            onChange={() => {
-                                setHistory(false)
-                                setFood(!food)
-                                setAdventure(false)
-                                setOther(false)
-                            }} /> Food
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`adventure`}
-                            checked={adventure}
-                            onChange={() => {
-                                setHistory(false)
-                                setFood(false)
-                                setAdventure(!adventure)
-                                setOther(false)
-                            }} /> Adventure
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`other`}
-                            checked={other}
-                            onChange={(e) => {
-                                setHistory(false)
-                                setFood(false)
-                                setAdventure(false)
-                                setOther(!other)
-                            }} /> Others
+                    <label className="type">Choose Type of Tour You Want to Host:</label>
+                    {errors && errors['type'] ? <div style={{ color: "red" }}>{errors['type']}</div> : <div className="empty-space"> </div>}
+                    <div className="row">
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`history`}
+                                checked={history}
+                                onChange={() => {
+                                    setHistory(!history)
+                                    setFood(false)
+                                    setAdventure(false)
+                                    setOther(false)
+                                }} /> History
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`food`}
+                                checked={food}
+                                onChange={() => {
+                                    setHistory(false)
+                                    setFood(!food)
+                                    setAdventure(false)
+                                    setOther(false)
+                                }} /> Food
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`adventure`}
+                                checked={adventure}
+                                onChange={() => {
+                                    setHistory(false)
+                                    setFood(false)
+                                    setAdventure(!adventure)
+                                    setOther(false)
+                                }} /> Adventure
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`other`}
+                                checked={other}
+                                onChange={(e) => {
+                                    setHistory(false)
+                                    setFood(false)
+                                    setAdventure(false)
+                                    setOther(!other)
+                                }} /> Others
+                        </div>
                     </div>
                 </div>
+                < br />
+
                 <div className="day-selection">
-                    <label className="dates">Choose Dates to Host Your Tour:</label>
+                    <label className="date">Choose Dates to Host Your Tour:</label>
                     <div>
                         < input
                             type="checkbox"
@@ -239,11 +247,12 @@ export default function PostTourModal() {
                     <br />
                 </div>
 
-
-                <button type="submit">Post Tour</button>
-                <button onClick={() => closeModal()}>Cancel</button>
+                <div className="post-tour-buttons-container">
+                    <button className={'tours-buttons'} type="submit">Post Tour</button>
+                    <button className={'tours-buttons'} onClick={() => closeModal()}>Cancel</button>
+                </div>
             </form >
-        </>
+        </div>
     );
 }
 

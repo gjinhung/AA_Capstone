@@ -17,7 +17,7 @@
   }
   
   .comment-input {
-    background-color: #f5acac;
+    background-color: white;
     width: 100%;
     padding: 5px 0px;
   }
@@ -55,3 +55,47 @@
   .submit-button-inactive:hover {
     background-color: gray;
   }
+
+  .editBooking-container{
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: lightgray;
+    margin-bottom: 20px;
+    width: 400px;
+  }
+
+  .booking-column{
+    width: fit-content;
+  }
+
+  .update-booking-date{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title-style{
+    font-family: "Basier circle",-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    margin-bottom: 5px;
+  }
+
+  .input-data{
+    width: fit-content;
+  }
+
+  .tours-buttons:disabled {
+    color: #acaaaa;
+}
+
+.tours-buttons:disabled:hover {
+  background-color: white;
+  color: #acaaaa;
+  cursor: not-allowed;
+}
+
+.save-changes{
+  display: flex;
+  justify-content: center;
+}

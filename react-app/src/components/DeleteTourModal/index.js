@@ -27,13 +27,13 @@ function DeleteTourModal({ tour_id }) {
 
 
   return (
-    <div className="deleteSpotContainer">
+    <div className="deleteTourContainer">
       <div className="deleteHeader">Confirm Delete</div>
       <div className="deleteText">Are you sure you want to delete this tour?</div>
-      <div>
+      <div className="post-tour-buttons-container">
         <button
           onClick={handleSubmit}
-          className='confirm-yes'
+          className='yes-delete'
         >
           Yes (Delete Tour)
         </button>
@@ -41,11 +41,12 @@ function DeleteTourModal({ tour_id }) {
           onClick={((e) => {
             closeModal();
           })}
-          className='cancel'
+          className='tours-buttons'
         >
           No (Keep Tour)
         </button>
       </div>
+      {errors && < label style={{ color: "red" }}>{errors}</label>}
     </div>
   )
 }

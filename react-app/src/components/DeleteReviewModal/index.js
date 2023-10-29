@@ -30,25 +30,26 @@ function DeleteReviewModal({ review }) {
   };
 
   return (
-    <div className="deleteSpotContainer">
+    <div className="deleteTourContainer">
       <div className="deleteHeader">Confirm Delete</div>
       <div className="deleteText">Are you sure you want to delete this review?</div>
-      <div>
+      <div className="post-tour-buttons-container">
         <button
           onClick={handleSubmit}
-          className='confirm-yes'
+          className='yes-delete'
         >
-          Yes (Delete Review)
+          Yes
         </button>
         <button
           onClick={((e) => {
             closeModal();
           })}
-          className='cancel'
+          className='tours-buttons'
         >
-          No (Keep Review)
+          No
         </button>
       </div>
+      {errors && < label style={{ color: "red" }}>{errors}</label>}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 .userImg{
-    height: 200px;
+    height: 150px;
     border-radius: 100px;
     aspect-ratio: 1/1;
     object-fit: cover;
@@ -12,6 +12,11 @@
     aspect-ratio: 1/1;
     object-fit: cover;
     object-position: center;
+}
+
+.profile_pic{
+    display: flex;
+    align-items: center;
 }
 
 .rating-input {
@@ -38,7 +43,7 @@
 }
 
 .comment-input {
-    background-color: #f5acac;;
+    background-color: white;
     width: 100%;
     padding: 5px 0px;
 }
@@ -70,11 +75,51 @@
 }
 
 .left-side{
-    width: 40%;
-    
+    width: 35%;
+    padding-right: 30px;
 }
 
 .right-side{
     width: 20%;
     border: 3px solid black;
+}
+
+.guide_details-container{
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+}
+
+.reviewer-container{
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+}
+
+
+.guide-rating{
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.guide-info-container, .rating-container{
+    padding-left: 15px;
+}
+
+.review-date{
+    color: gray;
+    padding-left: 15px;
+    align-self: center;
+    font-size: small;
+}
+
+.reviewer-name{
+    font-size: small;
+    align-self: center;
+}
+
+.namedatecontainer{
+    display: flex;
+    flex-direction: row;
 }

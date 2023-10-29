@@ -35,7 +35,11 @@ function App() {
   }, [dispatch]);
   if (!isLoaded) {
     return (
-      <>Loading....</>
+      <div className="loading-style">
+        <div className='loading-font'>
+          Loading...
+        </div>
+      </div>
     )
   } else {
     return (

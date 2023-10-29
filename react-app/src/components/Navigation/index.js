@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import { useLogSignIn } from "../../context/NavToggle"
 import './Navigation.css';
+import logo from '../../images/logo.png'
 import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Navigation({ isLoaded }) {
@@ -31,7 +32,13 @@ function Navigation({ isLoaded }) {
 	return (
 		<div className='navigation-bar'>
 			<div className='home'>
-				<NavLink onClick={clickHome} exact to="/">Home</NavLink>
+				<NavLink exact to="/" onClick={clickHome} className='home-button' >
+					<img src={logo}
+						className='logo'
+						alt='logo'
+						key='logo'
+					/>
+				</NavLink>
 			</div>
 			{
 				isLoaded && (
@@ -40,6 +47,7 @@ function Navigation({ isLoaded }) {
 					</div>
 				)
 			}
+
 		</div >
 	);
 }

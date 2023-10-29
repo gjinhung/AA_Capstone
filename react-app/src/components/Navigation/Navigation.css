@@ -8,4 +8,9 @@
   flex-direction: row;
   justify-content: space-between;
   margin: 20px;
+  border-bottom: 1px lightgray solid;
+}
+
+.logo{
+  height: 50px;
 }

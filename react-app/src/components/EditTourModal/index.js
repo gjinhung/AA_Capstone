@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useModal } from "../../context/Modal";
 import "./EditTourModal.css";
 import { allUsers } from "../../store/users";
-import { editReview, getReviews } from "../../store/reviews";
+// import { editReview, getReviews } from "../../store/reviews";
 import { editTour, getTours } from "../../store/tour";
 
 function EditTourModal({ tour }) {
@@ -28,7 +28,7 @@ function EditTourModal({ tour }) {
     const [other, setOther] = useState((tour.specialties_id).includes(1) ? true : false)
     const [price, setPrice] = useState(tour.price)
     const [about, setAbout] = useState(tour.about)
-    const [formDisabled, setFormDisabled] = useState(true);
+    // const [formDisabled, setFormDisabled] = useState(true);
     const { closeModal } = useModal();
 
     function handleChange(e) {
@@ -67,10 +67,11 @@ function EditTourModal({ tour }) {
 
     return (
         <>
-            <h1>Edit your Tour</h1>
-            <form onSubmit={handleSubmit}>
-                <label className="language"></label>
-                Language
+            <div className="title-tour-container">
+                <h1 className="title-tour">Edit Your Tour</h1>
+            </div>
+            <form className="createTour-container" onSubmit={handleSubmit}>
+                <label className="language">Update the Language</label>
                 <select
                     id='language'
                     name='language'
@@ -83,16 +84,16 @@ function EditTourModal({ tour }) {
                         )
                     })}
                 </select>
-                {errors && errors['language'] ? <div style={{ color: "red" }}>{errors['language']}</div> : <br />}
-                <label>Price</label>
+                {errors && errors['language'] ? <div style={{ color: "red" }}>{errors['language']}</div> : <div className="empty-space"> </div>}
+                <label>Update Your Price</label>
                 <input
                     type="text"
                     placeholder="Price per Hour"
                     value={price}
                     onChange={(e) => handleChange(e)}
                 />
-                {errors && errors['price'] ? <div style={{ color: "red" }}>{errors['price']}</div> : <br />}
-                <label>Description of the Tour</label>
+                {errors && errors['price'] ? <div style={{ color: "red" }}>{errors['price']}</div> : <div className="empty-space"> </div>}
+                <label>Update Description of the Tour</label>
                 <div className='text-container'>
                     <textarea
                         style={{ resize: "none" }}
@@ -105,9 +106,8 @@ function EditTourModal({ tour }) {
                     >
                     </textarea>
                 </div>
-                {errors && errors['about'] ? <div style={{ color: "red" }}>{errors['about']}</div> : <br />}
-                <label className="city"></label>
-                City
+                {errors && errors['about'] ? <div style={{ color: "red" }}>{errors['about']}</div> : <div className="empty-space"> </div>}
+                <label className="city">Change the City of the Tour</label>
                 <select
                     id='city'
                     name='city'
@@ -120,130 +120,143 @@ function EditTourModal({ tour }) {
                         )
                     })}
                 </select>
-                {errors && errors['city'] ? <div style={{ color: "red" }}>{errors['city']}</div> : <br />}
+                {errors && errors['city'] ? <div style={{ color: "red" }}>{errors['city']}</div> : <div className="empty-space"> </div>}
                 <div className="type-selection">
-                    <label className="dates">Choose Type of Tour You Want to Host:</label>
-                    {errors && errors['type'] ? <div style={{ color: "red" }}>{errors['type']}</div> : <br />}
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`history`}
-                            checked={history}
-                            onChange={() => {
-                                setHistory(!history)
-                                setFood(false)
-                                setAdventure(false)
-                                setOther(false)
-                            }} /> History
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`food`}
-                            checked={food}
-                            onChange={() => {
-                                setHistory(false)
-                                setFood(!false)
-                                setAdventure(false)
-                                setOther(false)
-                            }} /> Food
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`adventure`}
-                            checked={adventure}
-                            onChange={() => {
-                                setHistory(false)
-                                setFood(false)
-                                setAdventure(!adventure)
-                                setOther(false)
-                            }} /> Adventure
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`other`}
-                            checked={other}
-                            onChange={(e) => {
-                                setHistory(false)
-                                setFood(false)
-                                setAdventure(false)
-                                setOther(!other)
-                            }} /> Others
+                    <label className="type">Choose Type of Tour You Want to Host:</label>
+                    {errors && errors['type'] ? <div style={{ color: "red" }}>{errors['type']}</div> : <div className="empty-space"> </div>}
+                    <div className="row">
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`history`}
+                                checked={history}
+                                onChange={() => {
+                                    setHistory(!history)
+                                    setFood(false)
+                                    setAdventure(false)
+                                    setOther(false)
+                                }} /> History
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`food`}
+                                checked={food}
+                                onChange={() => {
+                                    setHistory(false)
+                                    setFood(!false)
+                                    setAdventure(false)
+                                    setOther(false)
+                                }} /> Food
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`adventure`}
+                                checked={adventure}
+                                onChange={() => {
+                                    setHistory(false)
+                                    setFood(false)
+                                    setAdventure(!adventure)
+                                    setOther(false)
+                                }} /> Adventure
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`other`}
+                                checked={other}
+                                onChange={(e) => {
+                                    setHistory(false)
+                                    setFood(false)
+                                    setAdventure(false)
+                                    setOther(!other)
+                                }} /> Others
+                        </div>
                     </div>
                 </div>
+                <br />
                 <div className="day-selection">
-                    <label className="dates">Choose Dates to Host Your Tour:</label>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`monday`}
-                            checked={monday}
-                            onChange={() => {
-                                setMon(!monday)
-                            }} /> Mondays
+                    <label className="date">Choose Dates to Host Your Tour:</label>
+                    <div className="row">
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`monday`}
+                                checked={monday}
+                                onChange={() => {
+                                    setMon(!monday)
+                                }} /> Mondays
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`tuesday`}
+                                checked={tuesday}
+                                onChange={(e) => setTue(!tuesday)} /> Tuesdays
+                        </div>
                     </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`tuesday`}
-                            checked={tuesday}
-                            onChange={(e) => setTue(!tuesday)} /> Tuesdays
+                    <div className="row">
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`wednesday`}
+                                checked={wednesday}
+                                onChange={(e) => setWed(!wednesday)} /> Wednesdays
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`thursday`}
+                                checked={thursday}
+                                onChange={(e) => setThur(!thursday)} /> Thursdays
+                        </div>
                     </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`wednesday`}
-                            checked={wednesday}
-                            onChange={(e) => setWed(!wednesday)} /> Wednesdays
+                    <div className="row">
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`friday`}
+                                checked={friday}
+                                onChange={(e) => setFri(!friday)} /> Fridays
+                        </div>
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`saturday`}
+                                checked={saturday}
+                                onChange={(e) => setSat(!saturday)} /> Saturdays
+                        </div>
                     </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`thursday`}
-                            checked={thursday}
-                            onChange={(e) => setThur(!thursday)} /> Thursdays
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`friday`}
-                            checked={friday}
-                            onChange={(e) => setFri(!friday)} /> Fridays
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`saturday`}
-                            checked={saturday}
-                            onChange={(e) => setSat(!saturday)} /> Saturdays
-                    </div>
-                    <div>
-                        < input
-                            type="checkbox"
-                            className="checkbox"
-                            name={`sunday`}
-                            checked={sunday}
-                            onChange={(e) => setSun(!sunday)} /> Sundays
+                    <div className="row">
+                        <div className="column">
+                            < input
+                                type="checkbox"
+                                className="checkbox"
+                                name={`sunday`}
+                                checked={sunday}
+                                onChange={(e) => setSun(!sunday)} /> Sundays
+                        </div>
                     </div>
                     <br />
                 </div>
 
-
-                <button type="submit">Edit Tour</button>
-                <button onClick={() => closeModal()}>Cancel</button>
+                <div className="post-tour-buttons-container">
+                    <button className={'tours-buttons'} type="submit">Edit Tour</button>
+                    <button className={'tours-buttons'} onClick={() => closeModal()}>Cancel</button>
+                </div>
             </form >
+
         </>
     );
 }

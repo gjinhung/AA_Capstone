@@ -1,15 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { editBooking, getBookings } from "../../store/booking";
 import { allUsers } from "../../store/users";
-import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
+import './EditBookingModal.css'
 
 export default function EditBookingModal({ booking }) {
 
-    const history = useHistory()
     const dispatch = useDispatch()
     let dateRef = useRef(booking.date)
     let dayNumRef = useRef()
@@ -18,7 +16,7 @@ export default function EditBookingModal({ booking }) {
     const [duration, setDuration] = useState(booking.duration)
     const [startTime, setStartTime] = useState(booking.start_time)
     const [submit, setSubmit] = useState(false)
-    const [price, setPrice] = useState(booking.tour.price)
+    // const [price, setPrice] = useState(booking.tour.price)
     const bookings = useSelector((state) => state.bookings)
     const users = useSelector((state) => state.users)
     const tours = useSelector((state) => state.tours)
@@ -29,7 +27,7 @@ export default function EditBookingModal({ booking }) {
     const id = bookings[booking.id].tour.guide_id
     const guide = users[+id]
 
-    const weekday = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    // const weekday = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
     let available_days = new Set()
     let tour_ids_arr = guide.tours_given_ids
@@ -50,7 +48,7 @@ export default function EditBookingModal({ booking }) {
         }
     })
 
-    let avail_days_array = Array.from(available_days)
+    // let avail_days_array = Array.from(available_days)
 
 
 
@@ -66,7 +64,6 @@ export default function EditBookingModal({ booking }) {
             'start_time': newStartTime
         }
 
-        console.log(booking_data)
         await dispatch(editBooking(booking.id, booking_data)).then((data) => {
             if (data.errors) {
                 setError(data.errors)
@@ -105,42 +102,54 @@ export default function EditBookingModal({ booking }) {
 
 
     let show = (
-        < form onSubmit={handleSubmit} >
-            <h3>Update Your Tour with {users[bookings[booking.id].tour.guide_id].first_name}</h3>
-            <div className="tour-selection">
-                <div>Type: {type[tours[bookings[booking.id].tour.id].specialties_id[0]].specialty}</div>
-                <div>About: {booking.tour.about}</div>
-                <div>Price: {booking.tour.price}/hr</div>
+        <>
+            <div className="title-tour-container">
+                <h3 className="title-tour">Update Your Tour with {users[bookings[booking.id].tour.guide_id].first_name}</h3>
             </div>
-            <br />
-            <div className="location-selection">
-                City: {cities[booking.tour.city_id].city}
-            </div>
-            <br />
-            <div className="date-button">
-                <label>Update the Date of Your Tour</label>
-                <input
-                    type="date"
-                    value={dateRef.current}
-                    onChange={(e) => handleDate(e.target.value)}
-                />
-            </div>
-            {error && error['date'] && <p style={{ color: "red" }}>{error["date"]}</p>}
-            <br />
-            <label className="time">Update Your Start Time:</label>
-            <input
-                type="time"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-            />
-            {error && error['start_time'] && <p style={{ color: "red" }}>{error["start_time"]}</p>}
-            <div>
+            < form className="editBooking-container" onSubmit={handleSubmit} >
+                <div className="booking-detail-container">
+                    <div className="type">Type: {type[tours[bookings[booking.id].tour.id].specialties_id[0]].specialty}</div>
+
+                    < br />
+                    <div className="row ">
+                        <div className="type booking-column">About:  </div>
+                        <div className="type column">{booking.tour.about}</div>
+                    </div>
+                    < br />
+                    <div className="type">Price: ${booking.tour.price}/hr</div>
+                </div>
                 <br />
-                <label className="duration">Update the Duration of Your Tour</label>
+                <div className="city">
+                    City: {cities[booking.tour.city_id].city}
+                </div>
+                <br />
+                <div className="update-booking-date">
+                    <label className="title-style">Update the Date of Your Tour:</label>
+                    <input
+                        type="date"
+                        value={dateRef.current}
+                        onChange={(e) => handleDate(e.target.value)}
+                        className="input-data"
+                    />
+                </div>
+                {error && error['date'] && <p style={{ color: "red" }}>{error["date"]}</p>}
+                <br />
+                <label className="title-style">Update Your Start Time:</label>
+                <input
+                    type="time"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    className="input-data"
+                />
+                {error && error['start_time'] && <p style={{ color: "red" }}>{error["start_time"]}</p>}
+
+                <br />
+                <label className="title-style">Update the Duration of Your Tour</label>
                 <select
                     id="duration"
                     name="duration"
                     value={duration}
+                    className="input-data"
                     onChange={(e) => setDuration(e.target.value)}>
                     <option value={1}>1</option>
                     <option value={2}>2</option>
@@ -148,21 +157,22 @@ export default function EditBookingModal({ booking }) {
                     <option value={4}>4</option>
                     <option value={5}>5</option>
                 </select>
-                <p>*5 hours max</p>
-            </div>
-            <div>
-                {duration && (<>
-                    Total: ${duration * price}
-                </>)}
-            </div>
-
-            <div className='submit_booking_container'>
-                <button className="submit_booking_button "
-                    disabled={submit}
-                    type="submit">Update Your Tour</button>
-                <button onClick={() => closeModal()}>Cancel</button>
-            </div>
-        </form >
+                <p className="title-style">*5 hours max</p>
+                <br />
+                <div className="title-style">
+                    {duration && (<>
+                        Total: ${duration * booking.tour.price}
+                    </>)}
+                </div>
+                <br />
+                <div className="post-tour-buttons-container">
+                    <button className={'tours-buttons'}
+                        disabled={submit}
+                        type="submit">Update Your Tour</button>
+                    <button className={'tours-buttons'} onClick={() => closeModal()}>Cancel</button>
+                </div>
+            </form >
+        </>
     )
 
 
