@@ -36,7 +36,7 @@ class SignUpForm(FlaskForm):
     last_name = StringField('last_name', validators=[DataRequired()])
     profile_pic = StringField("image_url", validators=[DataRequired(), valid_image_url])
     joined_on = DateTimeField('joined_on')
-    student= StringField('student', validators=[DataRequired()])
+    student= BooleanField('student')
     graduation_date=DateField('graduation')
     submit = SubmitField('submit')
     

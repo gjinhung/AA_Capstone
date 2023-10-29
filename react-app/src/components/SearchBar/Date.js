@@ -1,11 +1,12 @@
 import React, { useRef } from "react";
 import { useState } from "react";
 import { useSearch } from "../../context/SearchBar";
+// import { useSelector } from "react-redux";
 
 export default function DateSelection() {
     let menuRef = useRef()
     let dateRef = useRef('')
-    const [dayOfWk, setDayOfWk] = useState('');
+    // const [dayOfWk, setDayOfWk] = useState('');
     const [error, setError] = useState('')
     const { searchTerms, setSearch } = useSearch()
 
@@ -36,7 +37,7 @@ export default function DateSelection() {
 
     function handleSelected(e) {
         let obj = searchTerms
-        if (e.toLowerCase() === "any") {
+        if (!e || e.toLowerCase() === "any") {
             obj.date = ''
         } else {
             obj.date = e
@@ -57,34 +58,37 @@ export default function DateSelection() {
             setError("Past Dates are Invalid")
             handleSelected('any')
         } else {
-            setDayOfWk(weekday[newDate.getDay()])
-            handleSelected(dayOfWk)
+            // setDayOfWk(weekday[newDate.getDay()])
+            handleSelected(weekday[newDate.getDay()])
             setError('')
         }
     };
 
-    function reset() {
-        dateRef.current = ''
-        setDayOfWk('')
-    }
+    // function reset() {
+    //     dateRef.current = ''
+    // setDayOfWk('')
+    // }
 
     return (
         <>
             <div ref={menuRef} className="date-button">
-                <input
-                    type="date"
-                    value={dateRef.current}
-                    onChange={(e) => handleChange(e.target.value)}
-                />
-                {error ? <>
-                    <div style={{ color: "red" }}>{error}</div>
-                </> :
-                    <div>Selected Date: {dayOfWk}</div>
-                }
-            </div>
-            <div onClick={() => reset()}>
-                X
-            </div>
+                <div className="search-title-cont">
+                    <label className="search-title">SELECT A DATE</label>
+                    {error && <>
+                        <div style={{ textDecoration: 'underline' }} className="search-title">{error}</div>
+                    </>}
+                </div>
+                <div className="date-selection-container">
+                    <input
+                        type="date"
+                        className="date-input"
+                        value={dateRef.current}
+                        onChange={(e) => handleChange(e.target.value)}
+                    />
+                </div>
+
+            </div >
+
         </>
     );
 }

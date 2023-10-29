@@ -31,7 +31,7 @@ export default function LogInSignUp() {
                         <div className={`RightOverlayPanel-${signIn}`}>
                             <h1 className="title">Hello, Friend!</h1>
                             <div className="paragraph">
-                                Enter Your personal details and start journey with us
+                                Enter Your personal details and start touring with us
                             </div>
                             <button className="ghostButton" onClick={() => toggle('false')}>
                                 Sign Up

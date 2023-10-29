@@ -108,7 +108,7 @@ export default function EditBookingModal({ booking }) {
             </div>
             < form className="editBooking-container" onSubmit={handleSubmit} >
                 <div className="booking-detail-container">
-                    <div className="type">Type: {type[tours[bookings[booking.id].tour.id].specialties_id[0]].specialty}</div>
+                    <div className="type" >Type: {type[tours[bookings[booking.id].tour.id].specialties_id[0]].specialty}</div>
 
                     < br />
                     <div className="row ">

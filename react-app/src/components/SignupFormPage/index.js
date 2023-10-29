@@ -19,24 +19,35 @@ function SignupFormPage() {
   const [card1, setCard1] = useState('active')
   const [card2, setCard2] = useState('')
   const [card3, setCard3] = useState('')
-  const [isStudent, setIsStudent] = useState(false)
-  const [graduation_date, setGraduation] = useState('')
+  const [student, setStudent] = useState(false)
+  const [graduation_date, setGraduation] = useState(null)
   const [errors, setErrors] = useState({});
-  const stuRef = useRef(isStudent)
-  const [allowSub, setAllowSub] = useState(true)
+  const [allowSub, setAllowSub] = useState(false)
 
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let student = `${stuRef.current}`
     if (password === confirmPassword) {
-      const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
-      if (data) {
-        setErrors(data)
-      }
-      else {
-        window.location.reload(true)
+      if (graduation_date) {
+        const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
+        if (data) {
+          setErrors(data)
+          console.log(data)
+        }
+        else {
+          window.location.reload(true)
+        }
+      } else {
+        const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student));
+
+        if (data) {
+          setErrors(data)
+          console.log(data)
+        }
+        else {
+          window.location.reload(true)
+        }
       }
     } else {
       setErrors({ "confirmPassword": 'Confirm Password field must be the same as the Password field' });
@@ -44,14 +55,21 @@ function SignupFormPage() {
   };
 
   function handleStudent(e) {
-    setIsStudent(!isStudent)
-    stuRef.current = !isStudent
-    if (!isStudent) {
-      setGraduation('')
+    setStudent(!student)
+    if (!student) {
+      setGraduation(null)
+      setAllowSub(false)
     }
-    if (isStudent && !graduation_date) {
+
+
+  }
+
+  function handleGrad(e) {
+    setGraduation(e)
+    console.log(graduation_date)
+    if (student && !graduation_date) {
       setAllowSub(true)
-    } else if (isStudent && graduation_date) {
+    } else if (student && graduation_date) {
       setAllowSub(false)
     }
   }
@@ -60,7 +78,6 @@ function SignupFormPage() {
     if (password !== confirmPassword) {
       setErrors({ "confirmPassword": 'Confirm Password field must be the same as the Password field' })
     } else {
-      let student = stuRef.current
       const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
 
       if (data["username"] || data['email'] || data['password']) {
@@ -79,7 +96,6 @@ function SignupFormPage() {
   }
 
   const secondNext = async () => {
-    let student = stuRef.current
     const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
     if (data["first_name"] || data['last_name'] || data['profile_pic']) {
       const errorList = {
@@ -174,13 +190,13 @@ function SignupFormPage() {
         <h3 className="step-title">Are you a student?</h3>
         <div className="form-group">
           <label>student</label>
-          <input type='checkbox' value={isStudent} onChange={(e) => handleStudent(e.target.value)}></input>
+          <input type='checkbox' value={student} onChange={(e) => handleStudent(e.target.value)}></input>
         </div>
         <div className="form-group">
-          {isStudent &&
+          {student &&
             <>
               <label>graduation</label>
-              <input type='date' value={graduation_date} onChange={(e) => setGraduation(e.target.value)}></input>
+              <input type='date' value={graduation_date} onChange={(e) => handleGrad(e.target.value)}></input>
             </>
           }
         </div>

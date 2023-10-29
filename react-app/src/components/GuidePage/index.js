@@ -179,7 +179,7 @@ export default function GuidePage({ loaded }) {
                         </div >
                         <hr />
                         <h3>Reviews</h3>
-                        {current_user && current_user.id !== +id &&
+                        {current_user && current_user.id !== +id && canPost &&
                             (<>
                                 <button
                                     onClick={reviewToggle}

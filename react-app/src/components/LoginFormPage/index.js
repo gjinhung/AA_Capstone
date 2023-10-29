@@ -21,10 +21,13 @@ function LoginFormPage() {
     }
   };
 
-  function handleDemo(e) {
-    setEmail('demo@aa.io')
-    setPassword('password')
-    handleSubmit(e)
+  const handleDemo = async (e) => {
+    let demail = "demo@aa.io"
+    let dpassword = "password"
+    const data = await dispatch(login(demail, dpassword));
+    if (data) {
+      setErrors(data);
+    }
   }
 
   return (

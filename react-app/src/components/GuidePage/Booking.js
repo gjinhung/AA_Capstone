@@ -152,103 +152,130 @@ export default function PostBooking() {
     } else {
         show = (
             < form onSubmit={handleSubmit} >
-                <h3>Book A Tour Today</h3>
-                <div className="date-button">
-                    <label>Select a Date</label>
-                    <input
-                        type="date"
-                        value={dateRef.current}
-                        onChange={(e) => handleDate(e.target.value)}
-                    />
-                </div>
-                <br />
-                {
-                    step2 &&
-                    <>
-                        <div className="location-selection">
-                            <label className="city">Choose a City:</label>
-                            <select
-                                id="city"
-                                name="city"
-                                defaultValue={city}
-                                onChange={(e) => handleCity(e.target.value)}>
-                                <option value={city}></option>
-                                {toursCityWithSelectedDate.map((city_id, idx) => {
-                                    return (
-                                        <option key={idx} value={cities[city_id].city}>{cities[city_id].city}</option>
-                                    )
-                                })}
-                            </select>
-                        </div>
-                        <br />
-                    </>
-                }
-                {
-                    step3 &&
-                    <div className="tour-selection">
-                        <label className="tour">Choose a Tour:</label>
-                        {final_tours.map((tour, idx) => {
-                            return (
-                                <div key={idx}>
-                                    < input
-                                        type="checkbox"
-                                        className="checkbox"
-                                        name={tour.id}
-                                        defaultChecked={false}
-                                        value={tour.id}
-                                        key={idx}
-                                        onChange={(e) => handleTour(e.target.value, tour.price)} />
-                                    <div>Type: {type[tour.specialties_id[0]].specialty}</div>
-                                    <div>About: {tour.about}</div>
-                                    <div>Price: {tour.price}/hr</div>
-                                </div>
-                            )
-                        })}
-
-                        <br />
-                    </div>
-                }
-                {
-                    step4 &&
-                    <>
-                        <label className="time">Start Time:</label>
+                <h2 className="booking-title">Book A Tour Today!</h2>
+                <hr></hr>
+                <div className="booking-details">
+                    <div className="date-button">
+                        <label className="date">Select a Date</label>
                         <input
-                            type="time"
-                            value={startTime}
-                            onChange={(e) => setStartTime(e.target.value)}
+                            type="date"
+                            value={dateRef.current}
+                            onChange={(e) => handleDate(e.target.value)}
                         />
-                        <div>
+                    </div>
+                    <br />
+                    {
+                        step2 &&
+                        <>
+                            <div className="location-selection">
+                                <label className="city">Choose a City</label>
+                                <select
+                                    id="city"
+                                    name="city"
+                                    className="select-city"
+                                    defaultValue={city}
+                                    onChange={(e) => handleCity(e.target.value)}>
+                                    <option value={city}></option>
+                                    {toursCityWithSelectedDate.map((city_id, idx) => {
+                                        return (
+                                            <option key={idx} value={cities[city_id].city}>{cities[city_id].city}</option>
+                                        )
+                                    })}
+                                </select>
+                            </div>
                             <br />
-                            <label className="duration">Number of Hours?</label>
-                            <select
-                                id="duration"
-                                name="duration"
-                                value={duration}
-                                onChange={(e) => setDuration(e.target.value)}>
-                                <option value={0}>0</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                            </select>
-                            <p>*5 hours max</p>
-                        </div>
-                        <div>
-                            {duration && (<>
-                                Total: ${duration * price}
-                            </>)}
-                        </div>
-                    </>
-                }
-                {error &&
-                    <p style={{ color: "red" }}>{error}</p>
-                }
+                        </>
+                    }
+                    {
+                        step3 &&
+                        <div className="tour-selection">
+                            <label className="type">Choose a Tour:</label>
 
-                <div className='submit_booking_container'>
-                    <button className="submit_booking_button "
-                        disabled={submit}
-                        type="submit">Book Tour</button>
+                            {final_tours.map((tour, idx) => {
+                                return (
+                                    <div key={idx}>
+                                        <div className="booking-details-container">
+                                            <div className='booking-checkbox' key={idx}>
+                                                < input
+                                                    type="checkbox"
+                                                    className="checkbox"
+                                                    name={tour.id}
+                                                    defaultChecked={false}
+                                                    value={tour.id}
+                                                    key={idx}
+                                                    onChange={(e) => handleTour(e.target.value, tour.price)} />
+                                            </div>
+                                            <div className="booking-text">
+                                                <div className="booking-text-cont">
+                                                    <div style={{ textDecoration: "underline" }} className="booking-title-text">Type: </div>
+                                                    <div>{type[tour.specialties_id[0]].specialty}</div>
+                                                </div>
+                                                <div className="booking-text-cont">
+                                                    <div style={{ textDecoration: "underline" }} className="booking-title-text">About: </div>
+                                                    <div>{tour.about}</div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div className="type">Price: ${tour.price}/hr</div>
+                                    </div>
+
+                                )
+                            })}
+
+                            <br />
+                        </div>
+                    }
+                    {
+                        step4 &&
+                        <>
+                            <div className="location-selection">
+                                <label className="type">Start Time:</label>
+                                <input
+                                    className="select-city"
+                                    type="time"
+                                    value={startTime}
+                                    onChange={(e) => setStartTime(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <br />
+                                <label className="type">How Many Hours?</label>
+                                <div className="location-selection">
+                                    <select
+                                        className="select-city"
+                                        id="duration"
+                                        name="duration"
+                                        value={duration}
+                                        onChange={(e) => setDuration(e.target.value)}>
+                                        <option value={0}>0</option>
+                                        <option value={1}>1</option>
+                                        <option value={2}>2</option>
+                                        <option value={3}>3</option>
+                                        <option value={4}>4</option>
+                                        <option value={5}>5</option>
+                                    </select>
+                                </div>
+                                <p className="warning">*5 hours max</p>
+                            </div>
+                            <div className="type">
+
+                                Total: ${duration * price}
+
+                            </div>
+                        </>
+                    }
+                    {error &&
+                        <p style={{ color: "red" }}>{error}</p>
+                    }
+                    < br />
+                    <div className='submit_booking_container'>
+                        <button
+                            className="tours-buttons"
+                            disabled={submit}
+                            type="submit">Book Tour</button>
+                    </div>
                 </div>
             </form >
         )
@@ -256,8 +283,8 @@ export default function PostBooking() {
 
 
     return (
-        <>
+        <div className="booking-container">
             {show}
-        </>
+        </div>
     );
 }

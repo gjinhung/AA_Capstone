@@ -7,7 +7,7 @@ import { deleteTour, getTours } from '../../store/tour';
 
 
 function DeleteTourModal({ tour_id }) {
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState('');
   const { closeModal } = useModal();
   const dispatch = useDispatch();
 

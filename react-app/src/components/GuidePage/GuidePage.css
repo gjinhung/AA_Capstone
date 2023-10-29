@@ -42,11 +42,6 @@
     text-align: center;
 }
 
-.comment-input {
-    background-color: white;
-    width: 100%;
-    padding: 5px 0px;
-}
 
 .filled {
     color: black
@@ -81,7 +76,9 @@
 
 .right-side{
     width: 20%;
-    border: 3px solid black;
+    background-color: lightgray;
+    border-radius: 30px;
+    padding: 15px;
 }
 
 .guide_details-container{
@@ -122,4 +119,53 @@
 .namedatecontainer{
     display: flex;
     flex-direction: row;
+}
+
+.booking-title{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+.location-selection{
+    display: flex;
+    flex-direction: column;
+}
+
+.select-city{
+    width: fit-content;
+}
+
+.booking-details-container{
+    display: flex;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    background-color: rgb(191, 189, 189);
+}
+
+.booking-text{
+font-family: "Basier circle",-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+margin-bottom: 5px;
+font-size: small;
+}
+
+.booking-checkbox{
+    align-self: center;
+    padding-right: 10px;
+}
+
+.booking-text-cont{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.booking-title-text{
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.warning{
+    color: red;
+    font-size: small;
+    text-decoration: underline;
 }

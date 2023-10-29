@@ -7,7 +7,7 @@ import { deleteBooking, getBookings } from '../../store/booking';
 
 
 function DeleteBookingModal({ booking_id }) {
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState('');
   const { closeModal } = useModal();
   const dispatch = useDispatch();
 
