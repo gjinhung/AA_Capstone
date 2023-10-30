@@ -286,9 +286,9 @@ export default function GuidePage({ loaded }) {
                     </div>
                 </div>
                 <div className="right-side">
-                    {current_user && +id === current_user.id &&
+                    <>
                         <PostBooking />
-                    }
+                    </>
                 </div>
 
             </div >

@@ -141,6 +141,8 @@ export default function PostBooking() {
 
     };
 
+    console.log(current_user)
+    console.log(+id === current_user.id)
     let show
     if (!current_user) {
         show = (<>
