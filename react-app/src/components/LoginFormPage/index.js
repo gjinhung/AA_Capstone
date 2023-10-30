@@ -60,7 +60,7 @@ function LoginFormPage() {
           required
         />
       </label>
-      <button type="submit">Log In</button>
+      <button className="loginsignup" type="submit">Log In</button>
 
       <h5
         className="demoUser"

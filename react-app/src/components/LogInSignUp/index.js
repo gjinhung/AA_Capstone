@@ -23,7 +23,7 @@ export default function LogInSignUp() {
                             <p className="paragraph">
                                 To keep connected with us please login with your personal info
                             </p>
-                            <button className="ghostButton" onClick={() => toggle('true')}>
+                            <button className="ghostButton " onClick={() => toggle('true')}>
                                 Log In
                             </button>
                         </div>

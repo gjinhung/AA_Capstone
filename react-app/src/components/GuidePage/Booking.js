@@ -78,7 +78,6 @@ export default function PostBooking() {
         }
         await dispatch(newBooking(booking, +tour_id,)).then((data) => {
             if (data.errors) {
-                console.log(data.errors)
             } else {
                 dispatch(getBookings())
                 dispatch(allUsers())

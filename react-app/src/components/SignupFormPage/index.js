@@ -78,8 +78,9 @@ function SignupFormPage() {
     if (password !== confirmPassword) {
       setErrors({ "confirmPassword": 'Confirm Password field must be the same as the Password field' })
     } else {
+      console.log(username)
       const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
-
+      console.log(data)
       if (data["username"] || data['email'] || data['password']) {
         const errorList = {
           'username': data['username'],
@@ -155,6 +156,7 @@ function SignupFormPage() {
           <input placeholder={"Confirm Password"} type='password' value={confirmPassword} autoComplete="off" onChange={(e) => setConfirmPassword(e.target.value)}></input>
         </div>
         <button type="button"
+          className="loginsignup"
           onClick={firstNext}>Next</button>
       </div>
       <div className={`card ${card2}`} >
@@ -179,10 +181,12 @@ function SignupFormPage() {
         </div>
         <button
           type="button"
+          className="loginsignup"
           onClick={secondPrev}
         >Previous</button>
         <button
           type="button"
+          className="loginsignup"
           onClick={secondNext}
         >Next</button>
       </div>
@@ -202,9 +206,10 @@ function SignupFormPage() {
         </div>
         <button
           type="button"
+          className="loginsignup"
           onClick={thirdPrev}
         >Previous</button>
-        <button disabled={allowSub} type="submit">Sign Up</button>
+        <button disabled={allowSub} className="loginsignup" type="submit">Sign Up</button>
       </div>
     </form >
     // </div>

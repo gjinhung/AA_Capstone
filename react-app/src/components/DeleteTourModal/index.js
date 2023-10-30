@@ -1,3 +1,4 @@
+import React from 'react';
 import './DeleteTourModal.css'
 import { useDispatch } from "react-redux";
 import { useState } from 'react';
@@ -10,18 +11,21 @@ function DeleteTourModal({ tour_id }) {
   const [errors, setErrors] = useState('');
   const { closeModal } = useModal();
   const dispatch = useDispatch();
+  console.log(tour_id)
 
   const handleSubmit = async (e) => {
+    console.log('submited')
     e.preventDefault();
     setErrors({});
-    console.log(+tour_id)
-    const data = await dispatch(deleteTour(+tour_id))
+    console.log(tour_id)
+    const data = await dispatch(deleteTour(tour_id))
+    console.log(data)
     if (data) {
-      setErrors(data)
+      setErrors(data.errors)
     } else {
-      dispatch(getTours()).then(() =>
-        dispatch(allUsers())).then(() =>
-          closeModal())
+      closeModal()
+      dispatch(getTours())
+      dispatch(allUsers())
     }
   }
 
@@ -46,7 +50,7 @@ function DeleteTourModal({ tour_id }) {
           No (Keep Tour)
         </button>
       </div>
-      {errors && < label style={{ color: "red" }}>{errors}</label>}
+      {/* {errors && < label style={{ color: "red" }}>{errors}</label>} */}
     </div>
   )
 }

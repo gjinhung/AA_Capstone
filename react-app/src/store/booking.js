@@ -95,12 +95,11 @@ export const deleteBooking = (id) => async (dispatch) => {
     if (response.ok) {
         const data = await response.json();
         dispatch(removeBooking(id));
-        return data;
     } else if (response.status < 500) {
-        const data = await response.json();
-        if (data.errors) {
-            return data.errors;
-        }
+        // const data = await response.json();
+        // if (data.errors) {
+        //     return data.errors;
+        // }
     } else {
         return ["An error occurred while deleting a booking. Please try again."];
     }

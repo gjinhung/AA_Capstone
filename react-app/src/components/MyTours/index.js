@@ -42,10 +42,10 @@ export default function MyTours({ loaded }) {
         )
     } if (current_user.student) {
         return (
-            <>
+            <div className="scroll-container">
                 {user_tours_arr.map((tour_id, idx) => {
                     return (
-                        <div className="scroll-container" key={idx}>
+                        <div key={idx}>
                             <div className="image toursicon" >
                                 <img
                                     src={typeImg(type[tours[tour_id].specialties_id[0]])}
@@ -93,7 +93,7 @@ export default function MyTours({ loaded }) {
                     )
                 })
                 }
-            </>
+            </div>
         )
     } else {
         return null

@@ -1,37 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/session";
-import { useLogSignIn } from "../../context/NavToggle"
-import { NavLink } from 'react-router-dom';
-import { useHistory } from "react-router-dom/";
-import './Navigation.css'
-
+import OpenModalButton from "../OpenModalButton";
+import LoginFormModal from "../LoginFormModal";
+import SignupFormModal from "../SignupFormModal";
+import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
-  const { logSignIn, setLogSignIn } = useLogSignIn()
   const ulRef = useRef();
-  const navigate = useHistory();
 
   const openMenu = () => {
     if (showMenu) return;
     setShowMenu(true);
   };
 
-  const openLoginSignUp = () => {
-    // console.log("clicked")
-    // console.log(logSignIn)
-    setLogSignIn(!logSignIn)
-  }
-
   useEffect(() => {
-
     if (!showMenu) return;
 
     const closeMenu = (e) => {
-      // console.log(ulRef)
-      if (!ulRef.current.contains(e.target)) {
+      if (!ulRef.current || !ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
     };
@@ -42,77 +33,64 @@ function ProfileButton({ user }) {
   }, [showMenu]);
 
   const handleLogout = (e) => {
+    console.log('logoutclicked')
     e.preventDefault();
-    setLogSignIn(false)
-    setShowMenu(false)
     dispatch(logout());
-    navigate.push("/");
+    history.push('/')
   };
 
-  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
-  let show
-  if (!user) {
-    show = (
-      <>
-        <ul className={ulClassName} ref={ulRef}></ul>
-        <button
-          onClick={openLoginSignUp}>
-          <>Log In / Sign Up</>
-        </button>
-      </>
-    )
-  } else {
-    show = (
-      <>
-        <div onClick={openMenu}>
-          <i className="fas fa-user-circle" />
-          <ul className={ulClassName} ref={ulRef}></ul>
-          <>
-            <li>Welcome, {user.username}</li>
-            <li>{user.first_name} {user.last_name}</li>
-            <li>{user.email}</li>
-            <li className="view-logout-container">
-              <NavLink exact to="/dashboard" className="view-business-button">View Bookings</NavLink>
-              <button onClick={handleLogout} className="logout-red-button">Log Out</button>
-            </li>
-          </>
-        </div>
-      </>
-    )
-  }
+  const closeMenu = () => setShowMenu(false);
+  const ulClassName = "profile-drop" + (showMenu ? "" : " hidden");
 
   return (
     <>
-      {show}
-      {/* <button onClick={openMenu}>
-        {!user ? (<>Log In / Sign Up</>) : (<i className="fas fa-user-circle" />)}
-      </button> */}
-      {/* <ul className={ulClassName} ref={ulRef}>
-        {user ? (
+      {!user ? (
+        <NavLink exact to="/slider" className="logSignUp-button-container">
+          <button className="logSignUp-button">
+            LogIn / SignUp
+          </button>
+        </NavLink>
+      ) : (
+        <button onClick={openMenu} className="profile-button">
+          <img src={user.profile_pic} className="mini-profile"></img>
+        </button>
+      )}
+
+      <ul className={ulClassName} ref={ulRef}>
+        {user && (
           <>
-            <li>{user.username}</li>
+
+            <li>Welcome, {user.username}</li>
+            <li>{user.first_name} {user.last_name}</li>
             <li>{user.email}</li>
             <li>
-              <button onClick={handleLogout}>Log Out</button>
-            </li>
-          </>
-        ) : (
-          <div className='modals'>
-            <OpenModalButton
-              buttonText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
-            />
+              <NavLink onClick={closeMenu} exact to="/dashboard" className="view-dash-button">Dashboard</NavLink></li>
+            <li onClick={handleLogout} className="logout-red-button">Log Out</li>
 
-            <OpenModalButton
-              buttonText="Sign Up"
-              onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
-            />
-          </div>
-        )}
-      </ul > */}
+
+          </>
+        )
+          // : (
+          //   <>
+          //     <div className="view-logout-container">
+          //       <OpenModalButton
+          //         buttonText="Log In"
+          //         onItemClick={closeMenu}
+          //         modalComponent={<LoginFormModal />}
+          //         id={'log-in-button'}
+          //       />
+
+          //       <OpenModalButton
+          //         buttonText="Sign Up"
+          //         onItemClick={closeMenu}
+          //         modalComponent={<SignupFormModal />}
+          //         id={'sign-up-button'}
+          //       />
+          //     </div>
+          //   </>
+          // )
+        }
+      </ul>
     </>
   );
 }

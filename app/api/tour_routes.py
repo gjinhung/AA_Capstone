@@ -295,7 +295,7 @@ def edit_review(id):
 @tours_routes.route('/<int:id>/', methods=['DELETE'])
 def delete_tour(id):
     tour = TourGuide.query.get(id)
-
+   
     if current_user.id != tour.guide_id:
         return jsonify({"errors": "Unauthorized to delete this Tour"}), 403
     

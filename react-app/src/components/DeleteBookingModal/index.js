@@ -1,9 +1,12 @@
+import React from 'react';
 import './DeleteBookingModal.css'
 import { useDispatch } from "react-redux";
 import { useState } from 'react';
 import { useModal } from "../../context/Modal";
 import { allUsers } from '../../store/users';
 import { deleteBooking, getBookings } from '../../store/booking';
+
+
 
 
 function DeleteBookingModal({ booking_id }) {
@@ -14,7 +17,7 @@ function DeleteBookingModal({ booking_id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    const data = await dispatch(deleteBooking(+booking_id))
+    const data = await dispatch(deleteBooking(booking_id))
     if (data) {
       setErrors(data)
     } else {
@@ -45,7 +48,7 @@ function DeleteBookingModal({ booking_id }) {
           No (Keep Tour)
         </button>
       </div>
-      {errors && < label style={{ color: "red" }}>{errors}</label>}
+      {/* {errors && < label style={{ color: "red" }}>{errors}</label>} */}
     </div >
   )
 }

@@ -96,7 +96,7 @@ export default function SearchBar({ loaded }) {
         return (
             <div className="loading-style">
                 <div className='loading-font'>
-                    Loading...
+                    Loading......
                 </div>
             </div>
         )

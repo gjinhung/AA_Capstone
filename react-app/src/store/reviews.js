@@ -72,6 +72,8 @@ export const editReview = (id, review) => async (dispatch) => {
         body: JSON.stringify(review),
     });
 
+    console.log(response)
+
     if (response.ok) {
         const data = await response.json();
         dispatch(postReview(data));
@@ -87,18 +89,20 @@ export const editReview = (id, review) => async (dispatch) => {
 };
 
 export const deleteReview = (id) => async (dispatch) => {
+    console.log("in review")
+    console.log(id)
     const response = await fetch(`/api/reviews/${id}`, {
         method: 'DELETE',
     });
+    console.log('passed')
+    console.log(response)
     if (response.ok) {
-        const data = await response.json();
+        console.log(response)
         dispatch(removeReview(id));
-        return data;
-    } else if (response.status < 500) {
-        const data = await response.json();
-        if (data.errors) {
-            return data.errors;
-        }
+        // const data = await response.json();
+        // if (data.errors) {
+        //     return data.errors;
+        // }
     } else {
         return ["An error occurred while deleting a review. Please try again."];
     }
