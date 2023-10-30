@@ -43,7 +43,7 @@ export default function MyTours({ loaded }) {
     } if (current_user.student) {
         return (
             <div className="scroll-container">
-                {user_tours_arr.map((tour_id, idx) => {
+                {user_tours_arr.length && user_tours_arr.map((tour_id, idx) => {
                     return (
                         <div key={idx}>
                             <div className="image toursicon" >
