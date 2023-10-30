@@ -26,6 +26,7 @@ function DeleteTourModal({ tour_id }) {
       closeModal()
       dispatch(getTours())
       dispatch(allUsers())
+      location.reload()
     }
   }
 

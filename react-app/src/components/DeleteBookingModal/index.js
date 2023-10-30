@@ -25,6 +25,7 @@ function DeleteBookingModal({ booking_id }) {
       dispatch(getBookings())
       dispatch(allUsers())
       dispatch(authenticate())
+      location.reload()
     }
   }
 
