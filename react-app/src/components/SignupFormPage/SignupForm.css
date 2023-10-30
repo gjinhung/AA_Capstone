@@ -115,6 +115,12 @@
     background-color: crimson;
     color: #fff;
   }
+
+  .loginsignup:disabled:hover {
+    background-color: white;
+    color: #acaaaa;
+    cursor: not-allowed;
+  }
   
   @media (min-width: 768px) {
     .loginsignup {

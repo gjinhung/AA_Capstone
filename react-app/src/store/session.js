@@ -98,7 +98,7 @@ export const signUp = (username, email, password, first_name, last_name, profile
 			return data.errors;
 		}
 	} else {
-		const data = await response.json();
+		const data = response.json();
 		console.log(data)
 		return ["An error occurred. Please try again."];
 	}

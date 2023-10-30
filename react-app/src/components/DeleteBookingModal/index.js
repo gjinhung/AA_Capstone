@@ -5,8 +5,7 @@ import { useState } from 'react';
 import { useModal } from "../../context/Modal";
 import { allUsers } from '../../store/users';
 import { deleteBooking, getBookings } from '../../store/booking';
-
-
+import { authenticate } from '../../store/session';
 
 
 function DeleteBookingModal({ booking_id }) {
@@ -19,11 +18,13 @@ function DeleteBookingModal({ booking_id }) {
     setErrors({});
     const data = await dispatch(deleteBooking(booking_id))
     if (data) {
+      console.log(data)
       setErrors(data)
     } else {
-      dispatch(getBookings()).then(() =>
-        dispatch(allUsers())).then(() =>
-          closeModal())
+      closeModal()
+      dispatch(getBookings())
+      dispatch(allUsers())
+      dispatch(authenticate())
     }
   }
 

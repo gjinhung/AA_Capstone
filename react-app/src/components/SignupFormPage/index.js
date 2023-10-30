@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../store/session";
 import './SignupForm.css';
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { allUsers } from "../../store/users";
 
 function SignupFormPage() {
-  // const today = new Date()
+  const stuRef = useRef(false)
+  console.log(stuRef.current)
   const dispatch = useDispatch();
   const multiStepRef = useRef()
   const sessionUser = useSelector((state) => state.session.user);
@@ -20,11 +23,12 @@ function SignupFormPage() {
   const [card2, setCard2] = useState('')
   const [card3, setCard3] = useState('')
   const [student, setStudent] = useState(false)
-  const [graduation_date, setGraduation] = useState(null)
+  const [graduation_date, setGraduation] = useState("")
   const [errors, setErrors] = useState({});
   const [allowSub, setAllowSub] = useState(false)
+  const history = useHistory()
 
-  if (sessionUser) return <Redirect to="/" />;
+  // if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,17 +40,20 @@ function SignupFormPage() {
           console.log(data)
         }
         else {
-          window.location.reload(true)
+          dispatch(allUsers())
+          history.push('/')
         }
       } else {
         const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student));
-
+        console.log('handlesubmit')
+        console.log(data)
         if (data) {
           setErrors(data)
           console.log(data)
         }
         else {
-          window.location.reload(true)
+          dispatch(allUsers())
+          history.push('/')
         }
       }
     } else {
@@ -55,31 +62,29 @@ function SignupFormPage() {
   };
 
   function handleStudent(e) {
+    stuRef.current = !stuRef.current
     setStudent(!student)
-    if (!student) {
-      setGraduation(null)
-      setAllowSub(false)
+    console.log(stuRef.current)
+    if (!stuRef.current) {//if not a student
+      setAllowSub(false) //not disabled
+    }//if student
+    if (stuRef.current) {
+      setAllowSub(true) //disable
+      setGraduation('') //reset date
     }
-
-
   }
 
   function handleGrad(e) {
-    setGraduation(e)
-    console.log(graduation_date)
-    if (student && !graduation_date) {
-      setAllowSub(true)
-    } else if (student && graduation_date) {
-      setAllowSub(false)
-    }
+    setGraduation(e) //set graduation
+    setAllowSub(false) //not disabled
   }
 
   const firstNext = async (e) => {
     if (password !== confirmPassword) {
       setErrors({ "confirmPassword": 'Confirm Password field must be the same as the Password field' })
     } else {
-      console.log(username)
       const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
+      console.log('firstnext')
       console.log(data)
       if (data["username"] || data['email'] || data['password']) {
         const errorList = {
@@ -99,6 +104,8 @@ function SignupFormPage() {
   const secondNext = async () => {
     const data = await dispatch(signUp(username, email, password, first_name, last_name, profile_pic, student, graduation_date));
     if (data["first_name"] || data['last_name'] || data['profile_pic']) {
+      console.log('secondnext')
+      console.log(data)
       const errorList = {
         'first_name': data['first_name'],
         'last_name': data['last_name'],

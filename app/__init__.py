@@ -17,7 +17,10 @@ from .api.tour_routes import tours_routes
 from .seeds import seed_commands
 from .config import Config
 
-app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
+app = Flask(__name__)
+
+# Application Security
+CORS(app) 
 
 # Setup login manager
 login = LoginManager(app)
@@ -46,9 +49,9 @@ app.register_blueprint(language_routes, url_prefix='/api/languages')
 db.init_app(app)
 Migrate(app, db)
 
-# Application Security
-CORS(app)
 
+
+# cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Since we are deploying with Docker and Flask,
 # we won't be using a buildpack when we deploy to Heroku.

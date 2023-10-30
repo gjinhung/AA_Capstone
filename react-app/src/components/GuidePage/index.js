@@ -42,10 +42,6 @@ export default function GuidePage({ loaded }) {
                 }
             })
         }
-
-        if (!guide.tours_given.length) {
-            setCanPost(false)
-        }
     }, [canEdit, setCanEdit, current_user, id, reviews, users, guide.tours_given.length]);
 
     useEffect(() => {
