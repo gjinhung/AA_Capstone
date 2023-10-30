@@ -84,6 +84,7 @@ export const editTour = (id, tour) => async (dispatch) => {
 };
 
 export const deleteTour = (id) => async (dispatch) => {
+    console.log('attemp to delete')
     const response = await fetch(`/api/tours/${id}`, {
         method: 'DELETE',
     });
